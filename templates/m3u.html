@@ -1,0 +1,159 @@
+<!doctype html>
+<!--link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"-->
+<!--section class="content"-->
+{% extends 'base.html' %}
+
+{% block header %}
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <!--link href="//vjs.zencdn.net/7.3.0/video-js.min.css" rel="stylesheet">
+  <script src="//vjs.zencdn.net/7.3.0/video.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-flash@2/dist/videojs-flash.min.js"></script-->
+
+  <script type="text/javascript"> 
+    
+    function movec() {
+      let opts = Sel.options;
+      for (let opt of opts) 
+        if (opt.selected) 
+          RSel.add(opt.cloneNode(true));
+    }
+
+    function savec() {
+      let opts = RSel.options;
+      let jsn = {};
+      for (let opt of opts) {
+        if (opt.text.startsWith("Выберите")) continue;
+        jsn[opt.text] = opt.value;
+      }
+      jss = JSON.stringify(jsn);
+      fetch('/m3u/save', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: jss
+      }).then(function(response) {
+        response.text().then(function(myText){alert(myText);})
+      })
+    }
+
+    function deletec() {
+      let opts = RSel.options;
+      for (let opt of opts) 
+        if (opt.selected) 
+          RSel.remove(opt.index);
+      RSel.remove(RSel.selectedIndex)
+    }
+
+    function upc() {
+      let n = RSel.selectedIndex;
+      let opt = RSel.item(n);
+      RSel.remove(n);
+      RSel.add(opt,n-1);
+    }
+
+    function downc() {
+      let n = RSel.selectedIndex;
+      let opt = RSel.item(n);
+      RSel.remove(n);
+      RSel.add(opt,n+1);
+    }
+
+    function onchangec(sel) {
+      ref.text = sel.options[sel.selectedIndex].text;
+      // ref.href = "vlc:" + sel.value;
+      ref.href = sel.value;
+    }
+
+    function playc() {
+      /* video.target = Sel.value
+      var player = videojs('video',{techOrder: ['flash', 'html5']});
+      player.src(Sel.value);
+      player.play() 
+      let n = Sel.selectedIndex;*/
+      var video = document.getElementById('video');
+      // var videoSrc = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
+      var videoSrc = "http://127.0.0.1:8080/1"//Sel.value;
+      if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(videoSrc);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+          video.play();
+        });
+      }
+      // hls.js is not supported on platforms that do not have Media Source
+      // Extensions (MSE) enabled.
+      //
+      // When the browser has built-in HLS support (check using `canPlayType`),
+      // we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video
+      // element through the `src` property. This is using the built-in support
+      // of the plain video element, without using hls.js.
+      //
+      // Note: it would be more normal to wait on the 'canplay' event below however
+      // on Safari (where you are most likely to find built-in HLS support) the
+      // video.src URL must be on the user-driven white-list before a 'canplay'
+      // event will be emitted; the last video event that can be reliably
+      // listened-for when the URL is not on the white-list is 'loadedmetadata'.
+      else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = videoSrc;
+        video.addEventListener('loadedmetadata', function() {
+          video.play();
+        }); 
+      }
+    }
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <div style="clear: both">
+      <p>
+        <label>Playlist address<input name="url" style="width: 100%" type="text"></label>
+        <input name="btn" type="submit" value="Load">
+      </p>
+    </div>
+    <div>
+      <div style="float: left; padding: 3px">
+        <p><select id="Sel" onchange="onchangec(this)" multiple size="10">
+        <option disabled>Выберите канал</option>
+        {% for line in m3u.extinf %}
+          <option value="{{ line.stream }}">{{ line.getName() }}</option>
+        {% endfor %}
+        </select></p>
+      </div>
+      <div style="float: left; padding: 3px">
+        <!--p><input name="btn" type="button" onclick="playc()" value="Play"></p-->
+        <p><input name="btn" type="button" onclick="movec()" value="-->"></p>
+      </div>
+      <div style="float: left; padding: 3px">
+        <p><select name="RSel" id="RSel" onchange="onchangec(this)" multiple size="10">
+        <option disabled>Выберите канал</option>
+        {% for line in resm3u.extinf %}
+          <option value="{{ line.stream }}">{{ line.getName() }}</option>
+        {% endfor %}
+        </select></p>
+      </div>
+      <div style="float: left; padding: 3px">
+        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="upc()" value="Up"></p>
+        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="downc()" value="Down"></p>
+        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="deletec()" value="Delete"></p>
+        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="savec()" value="Save"></p>
+        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="window.location.href='/m3u/download';" value="Download"></p>
+        <!--p><a id="f_ref" href="/m3u/download" download>Download file</a></p-->
+      </div>
+    </div>
+    </form>
+    <div>
+      <!--p><span id="ref">refrence</span></p-->
+      <label>Play with PotPlayer<p><a id="ref" href="">Choose channel for play</a></p></label>
+      <!--video id="video" type="video/mp4" poster="//vjs.zencdn.net/v/oceans.png" preload="auto" controls width="400"></video-->
+      <!--object type="application/x-vlc-plugin" width="640" height="480" id="video" target="https://tvchannelstream1.tvzvezda.ru/cdn/tvzvezda/playlist_hdhigh.m3u8"></object-->
+
+    </div>
+        
+  {% endblock %}
+
+
