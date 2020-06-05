@@ -23,9 +23,11 @@ def get_m3u(id) :
 
     if post : 
         f_name = post['list']
-        with open(f_name) as f :
-            lines = f.readlines()
-        g.resm3u = M3Uclass.M3U(lines)
+        if f_name :
+            with open(f_name) as f :
+                lines = f.readlines()
+            g.resm3u = M3Uclass.M3U(lines)
+        else : g.resm3u = M3Uclass.M3U(empty=True)
     else : 
         db = get_db()
         db.execute(
@@ -66,16 +68,14 @@ def m3u():
 @login_required
 def m3u_save():
     data = request.get_json()
-    lines = []
-    lines.append("#EXTM3U\n")
-    for dt in data :
-        lines.append("#EXTINF:-1 ,{}\n".format(dt))
-        lines.append("{}\n".format(data[dt]))
-    print(''.join(lines))
-    #print(os.getcwd())
+    print(data)
     f_name = current_app.instance_path + "/u_fls/" + g.user['username'] + "_playlist.m3u8"
-    with open(f_name,'w') as f :
-        f.write(''.join(lines))
+    f = open(f_name,'w')
+    f.write("#EXTM3U\n")
+    for dt in data :
+        f.write("#EXTINF:-1 ,{}\n".format(dt.rstrip('\n')))
+        f.write("{}\n".format(data[dt].rstrip('\n')))
+    f.close()
     db = get_db()
     db.execute(
         'UPDATE m3u SET title = ?, list = ?'

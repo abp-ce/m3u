@@ -39,10 +39,16 @@
 
     function deletec() {
       let opts = RSel.options;
-      for (let opt of opts) 
-        if (opt.selected) 
-          RSel.remove(opt.index);
-      RSel.remove(RSel.selectedIndex)
+      for (let i = 0; i < opts.length; i++) {
+        if (opts[i].selected) {
+          RSel.remove(i)
+          i--
+        }
+      }
+      //for (let opt of opts) 
+      //  if (opt.selected) 
+      //    RSel.remove(opt.index);
+      // RSel.remove(RSel.selectedIndex)
     }
 
     function upc() {

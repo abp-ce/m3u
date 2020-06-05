@@ -5,8 +5,8 @@ class M3U:
         title = None
         stream = None
         def __init__(self,str1,str2):
-            self.title = str1[:-1]
-            self.stream = str2[:-1]
+            self.title = str1
+            self.stream = str2
         def getName(self):
             return self.title[self.title.rfind(',')+1:]
     extinf = None
@@ -21,6 +21,7 @@ class M3U:
         for line in lines:
             if isinstance(line, bytes) :
                 line = line.decode('utf-8')
+            line = line.rstrip('\n')
             if line.find("#EXTINF") == 0:
                 str1 = line
             elif line.find("#EXTGRP") == 0:
@@ -30,7 +31,7 @@ class M3U:
                 self.extinf.append(self.INF(str1, str2))
                 str1 = None
             elif line.find("#EXTM3U") == 0:
-                self.extm3u = line[:-1]
+                self.extm3u = line
 """
 def main():
     with open('/home/abp/flask-tutorial/flaskr/hd.m3u') as f:
