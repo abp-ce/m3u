@@ -3,7 +3,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for, current_app, send_from_directory
 )
 import urllib
-#import os
+import os
 from m3u.auth import login_required
 from m3u.db import get_db
 from . import M3Uclass
@@ -88,6 +88,10 @@ def m3u_save():
 @bp.route('/m3u/download')
 @login_required
 def m3u_download():
-    print("here")
-    return send_from_directory(current_app.instance_path + "/u_fls/", filename=g.user['username'] + "_playlist.m3u8", as_attachment=True)
-
+    #print("here")
+    #print(current_app.instance_path)
+    #print(g.user['username'])
+    #return send_from_directory(current_app.instance_path + "/u_fls/", filename=g.user['username'] + "_playlist.m3u8", as_attachment=True)
+    fp = os.path.join(current_app.instance_path, 'u_fls')
+    fn = g.user['username'] + "_playlist.m3u8"
+    return send_from_directory(os.path.abspath(fp), fn, as_attachment=True)
