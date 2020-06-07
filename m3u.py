@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for, current_app, send_from_directory
+    Blueprint, flash, g, redirect, render_template, request, url_for, current_app, send_from_directory, abort
 )
 import urllib
 import os
@@ -10,7 +10,11 @@ from . import M3Uclass
 
 bp = Blueprint('m3u', __name__)
 
-def get_m3u(id) : 
+def get_m3u(id = None) : 
+    if not id :
+        g.m3u = M3Uclass.M3U(empty=True)
+        g.resm3u = M3Uclass.M3U(empty=True)
+        return g.m3u, g.resm3u
     if 'm3u' not in g :
         g.m3u = M3Uclass.M3U(empty=True)
     
@@ -23,7 +27,7 @@ def get_m3u(id) :
 
     if post : 
         f_name = post['list']
-        if f_name :
+        if (f_name and os.path.exists(f_name)) :
             with open(f_name) as f :
                 lines = f.readlines()
             g.resm3u = M3Uclass.M3U(lines)
@@ -51,10 +55,11 @@ def init_app(app):
 
 
 @bp.route('/', methods=('GET', 'POST'))
-@login_required
 def m3u():
-
-    m3u, resm3u = get_m3u(g.user['id'])
+    if g.user :
+        m3u, resm3u = get_m3u(g.user['id'])
+    else :
+        m3u, resm3u = get_m3u()
     if request.method == 'POST':
         if request.form['btn'] == 'Load' :
             url = request.form["url"]
@@ -65,8 +70,10 @@ def m3u():
     return render_template('m3u.html', m3u=m3u, resm3u=resm3u)
 
 @bp.route('/m3u/save', methods=['POST'])
-@login_required
+#@login_required
 def m3u_save():
+    if not g.user :
+        return "Log in required"
     data = request.get_json()
     print(data)
     f_name = current_app.instance_path + "/u_fls/" + g.user['username'] + "_playlist.m3u8"
@@ -94,4 +101,7 @@ def m3u_download():
     #return send_from_directory(current_app.instance_path + "/u_fls/", filename=g.user['username'] + "_playlist.m3u8", as_attachment=True)
     fp = os.path.join(current_app.instance_path, 'u_fls')
     fn = g.user['username'] + "_playlist.m3u8"
-    return send_from_directory(os.path.abspath(fp), fn, as_attachment=True)
+    if os.path.exists(fp + '/' + fn) :
+        return send_from_directory(os.path.abspath(fp), fn, as_attachment=True)
+    else :
+        return abort(404,"File must be saved")
