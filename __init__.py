@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, render_template, request
+from flask_babel import Babel
 
 
 def create_app(test_config=None):
@@ -9,6 +10,10 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        LANGUAGES = {
+            'en': 'English',
+            'ru': 'Russian'
+        }
     )
 
     if test_config is None:
@@ -17,13 +22,19 @@ def create_app(test_config=None):
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
-
+    
+    babel = Babel(app)
+    
     # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
+    
+    @babel.localeselector
+    def get_locale():
+        return request.accept_languages.best_match(app.config['LANGUAGES'].keys())
+        
     # a simple page that says hello
     @app.route('/hello')
     def hello():

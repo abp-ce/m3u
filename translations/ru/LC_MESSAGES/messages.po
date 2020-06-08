@@ -1,0 +1,115 @@
+# Russian translations for PROJECT.
+# Copyright (C) 2020 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2020-06-08 20:47+0500\n"
+"PO-Revision-Date: 2020-06-08 20:21+0500\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: m3u/auth.py:53
+msgid "Incorrect username."
+msgstr "Неверное имя пользователя."
+
+#: m3u/auth.py:55
+msgid "Incorrect password."
+msgstr "Неверный пароль."
+
+#: m3u/m3u.py:76
+msgid "Log in required"
+msgstr "Требуется войти в систему"
+
+#: m3u/m3u.py:107
+msgid "File must be saved"
+msgstr "Файл должен быть сохранен"
+
+#: m3u/templates/base.html:2
+msgid "M3U Editor"
+msgstr "M3U редактор"
+
+#: m3u/templates/base.html:5
+msgid "M3U editor"
+msgstr "M3U редактор"
+
+#: m3u/templates/base.html:9
+msgid "Log Out"
+msgstr "Выйти"
+
+#: m3u/templates/auth/register.html:4 m3u/templates/auth/register.html:13
+#: m3u/templates/base.html:11
+msgid "Register"
+msgstr "Зарегистрироваться"
+
+#: m3u/templates/auth/login.html:4 m3u/templates/auth/login.html:13
+#: m3u/templates/base.html:12
+msgid "Log In"
+msgstr "Войти"
+
+#: m3u/templates/m3u.html:120
+msgid "Playlist address"
+msgstr "Адрес плейлиста"
+
+#: m3u/templates/m3u.html:121
+msgid "Load"
+msgstr "Загрузить"
+
+#: m3u/templates/m3u.html:126
+msgid "Source list"
+msgstr "Лист-источник"
+
+#: m3u/templates/m3u.html:128 m3u/templates/m3u.html:142
+msgid "Choose channels"
+msgstr "Выберите каналы"
+
+#: m3u/templates/m3u.html:140
+msgid "Your list"
+msgstr "Ваш лист"
+
+#: m3u/templates/m3u.html:149
+msgid "Up"
+msgstr "Вверх"
+
+#: m3u/templates/m3u.html:150
+msgid "Down"
+msgstr "Вниз"
+
+#: m3u/templates/m3u.html:151
+msgid "Delete"
+msgstr "Удалить"
+
+#: m3u/templates/m3u.html:152
+msgid "Save"
+msgstr "Сохранить"
+
+#: m3u/templates/m3u.html:153
+msgid "Download"
+msgstr "Скачать"
+
+#: m3u/templates/m3u.html:160
+msgid "Play with your player (PotPlayer)"
+msgstr "Смотреть в Вашем плеере (PotPlayer)"
+
+#: m3u/templates/m3u.html:160
+msgid "Choose channel for play"
+msgstr "Выберите канал для просмотра"
+
+#: m3u/templates/auth/login.html:9 m3u/templates/auth/register.html:9
+msgid "Username"
+msgstr "Пользователь"
+
+#: m3u/templates/auth/login.html:11 m3u/templates/auth/register.html:11
+msgid "Password"
+msgstr "Пароль"
+

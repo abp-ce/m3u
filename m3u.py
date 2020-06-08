@@ -73,7 +73,7 @@ def m3u():
 #@login_required
 def m3u_save():
     if not g.user :
-        return "Log in required"
+        return _("Log in required")
     data = request.get_json()
     print(data)
     f_name = current_app.instance_path + "/u_fls/" + g.user['username'] + "_playlist.m3u8"
@@ -104,4 +104,4 @@ def m3u_download():
     if os.path.exists(fp + '/' + fn) :
         return send_from_directory(os.path.abspath(fp), fn, as_attachment=True)
     else :
-        return abort(404,"File must be saved")
+        return abort(404,_("File must be saved"))

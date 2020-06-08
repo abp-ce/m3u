@@ -1,15 +1,15 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - M3U Editor</title>
+<title>{% block title %}{% endblock %} - {{ _('M3U Editor') }}</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
-  <h1>M3U editor</h1>
+  <h1>{{ _('M3U editor') }}</h1>
   <ul>
     {% if g.user %}
       <li><span>{{ g.user['username'] }}</span>
-      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+      <li><a href="{{ url_for('auth.logout') }}">{{ _('Log Out') }}</a>
     {% else %}
-      <li><a href="{{ url_for('auth.register') }}">Register</a>
-      <li><a href="{{ url_for('auth.login') }}">Log In</a>
+      <li><a href="{{ url_for('auth.register') }}">{{ _('Register') }}</a>
+      <li><a href="{{ url_for('auth.login') }}">{{ _('Log In') }}</a>
     {% endif %}
   </ul>
 </nav>

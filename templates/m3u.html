@@ -117,44 +117,47 @@
   <form method="post">
     <div style="clear: both">
       <p>
-        <label>Playlist address<input name="url" style="width: 100%" type="text"></label>
-        <input name="btn" type="submit" value="Load">
+        <label>{{ _('Playlist address') }}<input name="url" style="width: 100%" type="text"></label>
+        <input name="btn" type="submit" value="{{ _('Load') }}">
       </p>
     </div>
     <div>
       <div style="float: left; padding: 3px">
+        <label for="Sel">{{ _('Source list') }}</label>
         <p><select id="Sel" onchange="onchangec(this)" multiple size="10">
-        <option disabled>Выберите канал</option>
+        <option disabled>{{ _('Choose channels') }}</option>
         {% for line in m3u.extinf %}
           <option value="{{ line.stream }}">{{ line.getName() }}</option>
         {% endfor %}
         </select></p>
       </div>
-      <div style="float: left; padding: 3px">
+      <div style="float: left; padding-top: 23px">
         <!--p><input name="btn" type="button" onclick="playc()" value="Play"></p-->
+        <p></p>
         <p><input name="btn" type="button" onclick="movec()" value="-->"></p>
       </div>
       <div style="float: left; padding: 3px">
+        <label for="RSel">{{ _('Your list') }}</label>
         <p><select name="RSel" id="RSel" onchange="onchangec(this)" multiple size="10">
-        <option disabled>Выберите канал</option>
+        <option disabled>{{ _('Choose channels') }}</option>
         {% for line in resm3u.extinf %}
           <option value="{{ line.stream }}">{{ line.getName() }}</option>
         {% endfor %}
         </select></p>
       </div>
-      <div style="float: left; padding: 3px">
-        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="upc()" value="Up"></p>
-        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="downc()" value="Down"></p>
-        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="deletec()" value="Delete"></p>
-        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="savec()" value="Save"></p>
-        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="window.location.href='/m3u/download';" value="Download"></p>
+      <div style="float: left; padding-top: 23px">
+        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="upc()" value="{{ _('Up') }}"></p>
+        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="downc()" value="{{ _('Down') }}"></p>
+        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="deletec()" value="{{ _('Delete') }}"></p>
+        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="savec()" value="{{ _('Save') }}"></p>
+        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="window.location.href='/m3u/download';" value="{{ _('Download') }}"></p>
         <!--p><a id="f_ref" href="/m3u/download" download>Download file</a></p-->
       </div>
     </div>
     </form>
     <div>
       <!--p><span id="ref">refrence</span></p-->
-      <label>Play with your player (PotPlayer)<p><a id="ref" href="">Choose channel for play</a></p></label>
+      <label>{{ _('Play with your player (PotPlayer)') }}<p><a id="ref" href="">{{ _('Choose channel for play') }}</a></p></label>
       <!--video id="video" type="video/mp4" poster="//vjs.zencdn.net/v/oceans.png" preload="auto" controls width="400"></video-->
       <!--object type="application/x-vlc-plugin" width="640" height="480" id="video" target="https://tvchannelstream1.tvzvezda.ru/cdn/tvzvezda/playlist_hdhigh.m3u8"></object-->
 
