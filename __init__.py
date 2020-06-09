@@ -33,12 +33,13 @@ def create_app(test_config=None):
     
     @babel.localeselector
     def get_locale():
+        #return 'en'
         return request.accept_languages.best_match(app.config['LANGUAGES'].keys())
         
     # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    @app.route('/yandex_180e9fedf38f3004.html')
+    def yandex_180e9fedf38f3004():
+        return render_template('yandex_180e9fedf38f3004.html')
 
     from . import m3u
     m3u.init_app(app)

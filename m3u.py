@@ -2,6 +2,7 @@
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for, current_app, send_from_directory, abort
 )
+from flask_babel import _
 import urllib
 import os
 from m3u.auth import login_required
@@ -61,7 +62,7 @@ def m3u():
     else :
         m3u, resm3u = get_m3u()
     if request.method == 'POST':
-        if request.form['btn'] == 'Load' :
+        if request.form['btn'] == (_('Load')) :
             url = request.form["url"]
             with urllib.request.urlopen(url) as f:
                 lines = f.readlines()
@@ -73,7 +74,7 @@ def m3u():
 #@login_required
 def m3u_save():
     if not g.user :
-        return _("Log in required")
+        return (_("Log in required"))
     data = request.get_json()
     print(data)
     f_name = current_app.instance_path + "/u_fls/" + g.user['username'] + "_playlist.m3u8"

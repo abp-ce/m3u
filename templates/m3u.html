@@ -117,7 +117,8 @@
   <form method="post">
     <div style="clear: both">
       <p>
-        <label>{{ _('Playlist address') }}<input name="url" style="width: 100%" type="text"></label>
+        <label for="url">{{ _('Playlist address') }}</label>
+        <input id="url" name="url" style="width: 100%" type="url" placeholder="https://iptvm3u.ru/hdlist.m3u">
         <input name="btn" type="submit" value="{{ _('Load') }}">
       </p>
     </div>
@@ -162,6 +163,10 @@
       <!--object type="application/x-vlc-plugin" width="640" height="480" id="video" target="https://tvchannelstream1.tvzvezda.ru/cdn/tvzvezda/playlist_hdhigh.m3u8"></object-->
 
     </div>
+    <footer style="font-size: x-small; text-align: right;">
+      <p style="margin-bottom: -8px;">{{ _('Author: Andrei Polyakov') }}</p>
+      <p style="margin-bottom: -8px;"><a href="{{ _('mailto:ap120368+web@gmail.com') }}">{{ _('ap120368+web@gmail.com') }}</a></p>
+    </footer>
         
   {% endblock %}
 

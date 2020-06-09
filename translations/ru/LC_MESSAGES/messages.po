@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-08 20:47+0500\n"
+"POT-Creation-Date: 2020-06-09 16:41+0500\n"
 "PO-Revision-Date: 2020-06-08 20:21+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,19 +19,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: m3u/auth.py:53
+#: m3u/auth.py:22
+msgid "Username is required."
+msgstr "Требуется имя пользователя."
+
+#: m3u/auth.py:24
+msgid "Password is required."
+msgstr "Требуется пароль."
+
+#: m3u/auth.py:29
+msgid "User is already registered."
+msgstr "Пользователь уже зарегистрирован."
+
+#: m3u/auth.py:55
 msgid "Incorrect username."
 msgstr "Неверное имя пользователя."
 
-#: m3u/auth.py:55
+#: m3u/auth.py:57
 msgid "Incorrect password."
 msgstr "Неверный пароль."
 
-#: m3u/m3u.py:76
+#: m3u/m3u.py:65 m3u/templates/m3u.html:122
+msgid "Load"
+msgstr "Загрузить"
+
+#: m3u/m3u.py:77
 msgid "Log in required"
 msgstr "Требуется войти в систему"
 
-#: m3u/m3u.py:107
+#: m3u/m3u.py:108
 msgid "File must be saved"
 msgstr "Файл должен быть сохранен"
 
@@ -39,21 +55,21 @@ msgstr "Файл должен быть сохранен"
 msgid "M3U Editor"
 msgstr "M3U редактор"
 
-#: m3u/templates/base.html:5
+#: m3u/templates/base.html:6
 msgid "M3U editor"
 msgstr "M3U редактор"
 
-#: m3u/templates/base.html:9
+#: m3u/templates/base.html:10
 msgid "Log Out"
 msgstr "Выйти"
 
 #: m3u/templates/auth/register.html:4 m3u/templates/auth/register.html:13
-#: m3u/templates/base.html:11
+#: m3u/templates/base.html:12
 msgid "Register"
 msgstr "Зарегистрироваться"
 
 #: m3u/templates/auth/login.html:4 m3u/templates/auth/login.html:13
-#: m3u/templates/base.html:12
+#: m3u/templates/base.html:13
 msgid "Log In"
 msgstr "Войти"
 
@@ -61,49 +77,57 @@ msgstr "Войти"
 msgid "Playlist address"
 msgstr "Адрес плейлиста"
 
-#: m3u/templates/m3u.html:121
-msgid "Load"
-msgstr "Загрузить"
-
-#: m3u/templates/m3u.html:126
+#: m3u/templates/m3u.html:127
 msgid "Source list"
 msgstr "Лист-источник"
 
-#: m3u/templates/m3u.html:128 m3u/templates/m3u.html:142
+#: m3u/templates/m3u.html:129 m3u/templates/m3u.html:143
 msgid "Choose channels"
 msgstr "Выберите каналы"
 
-#: m3u/templates/m3u.html:140
+#: m3u/templates/m3u.html:141
 msgid "Your list"
 msgstr "Ваш лист"
 
-#: m3u/templates/m3u.html:149
+#: m3u/templates/m3u.html:150
 msgid "Up"
 msgstr "Вверх"
 
-#: m3u/templates/m3u.html:150
+#: m3u/templates/m3u.html:151
 msgid "Down"
 msgstr "Вниз"
 
-#: m3u/templates/m3u.html:151
+#: m3u/templates/m3u.html:152
 msgid "Delete"
 msgstr "Удалить"
 
-#: m3u/templates/m3u.html:152
+#: m3u/templates/m3u.html:153
 msgid "Save"
 msgstr "Сохранить"
 
-#: m3u/templates/m3u.html:153
+#: m3u/templates/m3u.html:154
 msgid "Download"
 msgstr "Скачать"
 
-#: m3u/templates/m3u.html:160
+#: m3u/templates/m3u.html:161
 msgid "Play with your player (PotPlayer)"
 msgstr "Смотреть в Вашем плеере (PotPlayer)"
 
-#: m3u/templates/m3u.html:160
+#: m3u/templates/m3u.html:161
 msgid "Choose channel for play"
 msgstr "Выберите канал для просмотра"
+
+#: m3u/templates/m3u.html:167
+msgid "Author: Andrei Polyakov"
+msgstr "Автор: Андрей Поляков"
+
+#: m3u/templates/m3u.html:168
+msgid "mailto:ap120368+web@gmail.com"
+msgstr "mailto:abp52-mail@mail.ru"
+
+#: m3u/templates/m3u.html:168
+msgid "ap120368+web@gmail.com"
+msgstr "abp52-mail@mail.ru"
 
 #: m3u/templates/auth/login.html:9 m3u/templates/auth/register.html:9
 msgid "Username"
@@ -112,4 +136,10 @@ msgstr "Пользователь"
 #: m3u/templates/auth/login.html:11 m3u/templates/auth/register.html:11
 msgid "Password"
 msgstr "Пароль"
+
+#~ msgid "mailto:ap120368@gmail.com"
+#~ msgstr "mailto:abp52-mail@mail.ru"
+
+#~ msgid "ap120368@gmail.com"
+#~ msgstr "abp52-mail@mail.ru"
 
