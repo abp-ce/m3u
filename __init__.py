@@ -45,6 +45,9 @@ def create_app(test_config=None):
     def robots():
         return send_from_directory("static", "robots.txt")
 
+    @app.route("/favicon.ico")
+    def favicon():
+        return send_from_directory("static", "favicon.ico")
 
     from . import m3u
     m3u.init_app(app)
