@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from flask_babel import Babel
 
 
@@ -40,6 +40,11 @@ def create_app(test_config=None):
     @app.route('/yandex_180e9fedf38f3004.html')
     def yandex_180e9fedf38f3004():
         return render_template('yandex_180e9fedf38f3004.html')
+    
+    @app.route("/robots.txt")
+    def robots():
+        return send_from_directory("static", "robots.txt")
+
 
     from . import m3u
     m3u.init_app(app)
