@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-09 16:41+0500\n"
+"POT-Creation-Date: 2020-06-12 13:26+0500\n"
 "PO-Revision-Date: 2020-06-08 20:21+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -39,7 +39,7 @@ msgstr "Неверное имя пользователя."
 msgid "Incorrect password."
 msgstr "Неверный пароль."
 
-#: m3u/m3u.py:65 m3u/templates/m3u.html:122
+#: m3u/m3u.py:65 m3u/templates/m3u.html:22
 msgid "Load"
 msgstr "Загрузить"
 
@@ -55,77 +55,93 @@ msgstr "Файл должен быть сохранен"
 msgid "M3U Editor"
 msgstr "M3U редактор"
 
-#: m3u/templates/base.html:6
+#: m3u/templates/base.html:3
+msgid "IPTV M3U playlist editor"
+msgstr "IPTV M3U плейлист редактор"
+
+#: m3u/templates/base.html:8
 msgid "M3U editor"
 msgstr "M3U редактор"
 
-#: m3u/templates/base.html:10
+#: m3u/templates/base.html:12
 msgid "Log Out"
 msgstr "Выйти"
 
 #: m3u/templates/auth/register.html:4 m3u/templates/auth/register.html:13
-#: m3u/templates/base.html:12
+#: m3u/templates/base.html:14
 msgid "Register"
 msgstr "Зарегистрироваться"
 
 #: m3u/templates/auth/login.html:4 m3u/templates/auth/login.html:13
-#: m3u/templates/base.html:13
+#: m3u/templates/base.html:15
 msgid "Log In"
 msgstr "Войти"
 
-#: m3u/templates/m3u.html:120
+#: m3u/templates/m3u.html:20
 msgid "Playlist address"
 msgstr "Адрес плейлиста"
 
-#: m3u/templates/m3u.html:127
+#: m3u/templates/m3u.html:27
 msgid "Source list"
 msgstr "Лист-источник"
 
-#: m3u/templates/m3u.html:129 m3u/templates/m3u.html:143
+#: m3u/templates/m3u.html:29 m3u/templates/m3u.html:43
 msgid "Choose channels"
 msgstr "Выберите каналы"
 
-#: m3u/templates/m3u.html:141
+#: m3u/templates/m3u.html:37
+msgid "Move"
+msgstr "Перенести"
+
+#: m3u/templates/m3u.html:38
+msgid "Unselect"
+msgstr "Снять выделение"
+
+#: m3u/templates/m3u.html:38
+msgid "<- Unselect ->"
+msgstr "<- X выбор ->"
+
+#: m3u/templates/m3u.html:41
 msgid "Your list"
 msgstr "Ваш лист"
 
-#: m3u/templates/m3u.html:150
+#: m3u/templates/m3u.html:50
 msgid "Up"
 msgstr "Вверх"
 
-#: m3u/templates/m3u.html:151
+#: m3u/templates/m3u.html:51
 msgid "Down"
 msgstr "Вниз"
 
-#: m3u/templates/m3u.html:152
+#: m3u/templates/m3u.html:52
 msgid "Delete"
 msgstr "Удалить"
 
-#: m3u/templates/m3u.html:153
+#: m3u/templates/m3u.html:53
 msgid "Save"
 msgstr "Сохранить"
 
-#: m3u/templates/m3u.html:154
+#: m3u/templates/m3u.html:54
 msgid "Download"
 msgstr "Скачать"
 
-#: m3u/templates/m3u.html:161
+#: m3u/templates/m3u.html:61
 msgid "Play with your player (PotPlayer)"
 msgstr "Смотреть в Вашем плеере (PotPlayer)"
 
-#: m3u/templates/m3u.html:161
+#: m3u/templates/m3u.html:61
 msgid "Choose channel for play"
 msgstr "Выберите канал для просмотра"
 
-#: m3u/templates/m3u.html:167
+#: m3u/templates/m3u.html:67
 msgid "Author: Andrei Polyakov"
 msgstr "Автор: Андрей Поляков"
 
-#: m3u/templates/m3u.html:168
+#: m3u/templates/m3u.html:68
 msgid "mailto:ap120368+web@gmail.com"
 msgstr "mailto:abp52-mail@mail.ru"
 
-#: m3u/templates/m3u.html:168
+#: m3u/templates/m3u.html:68
 msgid "ap120368+web@gmail.com"
 msgstr "abp52-mail@mail.ru"
 

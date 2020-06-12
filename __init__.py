@@ -42,8 +42,9 @@ def create_app(test_config=None):
         return render_template('yandex_180e9fedf38f3004.html')
     
     @app.route("/robots.txt")
+    @app.route('/sitemap.xml')
     def robots():
-        return send_from_directory("static", "robots.txt")
+        return send_from_directory("static", request.path[1:])
 
     @app.route("/favicon.ico")
     def favicon():

@@ -1,3 +1,5 @@
 User-agent: Yandex
 Disallow: /__pycache__
 Disallow: /*blog.*
+
+Sitemap: https://abp-m3u.tk/sitemap.xml
