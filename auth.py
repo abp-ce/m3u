@@ -139,7 +139,8 @@ def google():
     'response_type' : 'code',
     'client_id' : '1059153616307-a60m0vusroenkvs0uft36ndon71su2jd.apps.googleusercontent.com',
     'client_secret' : 'cTcMehGeuTvKWLe1gDM5jZ5w',
-    'redirect_uri' : "http://a.abp-te.tk:48889/auth/google",
+    #'redirect_uri' : "http://a.abp-te.tk:48889/auth/google",
+    'redirect_uri' : "https://abp-m3u.tk/auth/google",
     'scope' : 'https://www.googleapis.com/auth/userinfo.email',
     'grant_type': 'authorization_code'
     }
