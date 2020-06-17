@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-12 13:26+0500\n"
+"POT-Creation-Date: 2020-06-17 13:11+0500\n"
 "PO-Revision-Date: 2020-06-08 20:21+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,25 +19,29 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: m3u/auth.py:22
+#: m3u/auth.py:24
 msgid "Username is required."
 msgstr "Требуется имя пользователя."
 
-#: m3u/auth.py:24
+#: m3u/auth.py:26
 msgid "Password is required."
 msgstr "Требуется пароль."
 
-#: m3u/auth.py:29
+#: m3u/auth.py:31
 msgid "User is already registered."
 msgstr "Пользователь уже зарегистрирован."
 
-#: m3u/auth.py:55
+#: m3u/auth.py:57
 msgid "Incorrect username."
 msgstr "Неверное имя пользователя."
 
-#: m3u/auth.py:57
+#: m3u/auth.py:59
 msgid "Incorrect password."
 msgstr "Неверный пароль."
+
+#: m3u/auth.py:113
+msgid "Your registred. Please log in."
+msgstr "Вы зарегистрировались. Пожалуйста, войдите."
 
 #: m3u/m3u.py:65 m3u/templates/m3u.html:22
 msgid "Load"
@@ -59,21 +63,21 @@ msgstr "M3U редактор"
 msgid "IPTV M3U playlist editor"
 msgstr "IPTV M3U плейлист редактор"
 
-#: m3u/templates/base.html:8
+#: m3u/templates/base.html:21
 msgid "M3U editor"
 msgstr "M3U редактор"
 
-#: m3u/templates/base.html:12
+#: m3u/templates/base.html:25
 msgid "Log Out"
 msgstr "Выйти"
 
 #: m3u/templates/auth/register.html:4 m3u/templates/auth/register.html:13
-#: m3u/templates/base.html:14
+#: m3u/templates/base.html:27
 msgid "Register"
 msgstr "Зарегистрироваться"
 
 #: m3u/templates/auth/login.html:4 m3u/templates/auth/login.html:13
-#: m3u/templates/base.html:15
+#: m3u/templates/base.html:28
 msgid "Log In"
 msgstr "Войти"
 
@@ -152,6 +156,30 @@ msgstr "Пользователь"
 #: m3u/templates/auth/login.html:11 m3u/templates/auth/register.html:11
 msgid "Password"
 msgstr "Пароль"
+
+#: m3u/templates/auth/login.html:15
+msgid "Sign in with"
+msgstr "Войти с помощью"
+
+#: m3u/templates/auth/login.html:17
+msgid "Yandex login"
+msgstr "Вход через Яндекс"
+
+#: m3u/templates/auth/login.html:19
+msgid "Google login"
+msgstr "Вход через Google"
+
+#: m3u/templates/auth/register.html:15
+msgid "Register with"
+msgstr "Зарегистрироваться с помощью"
+
+#: m3u/templates/auth/register.html:17
+msgid "Yandex register"
+msgstr "Зарегистрироваться через Яндекс"
+
+#: m3u/templates/auth/register.html:19
+msgid "Google register"
+msgstr "Зарегистрироваться через Google"
 
 #~ msgid "mailto:ap120368@gmail.com"
 #~ msgstr "mailto:abp52-mail@mail.ru"
