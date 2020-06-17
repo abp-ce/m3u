@@ -77,7 +77,7 @@ def m3u_save():
         return (_("Log in required"))
     data = request.get_json()
     print(data)
-    f_name = current_app.instance_path + "/u_fls/" + g.user['id'] + "_playlist.m3u8"
+    f_name = current_app.instance_path + "/u_fls/" + str(g.user['id']) + "_playlist.m3u8"
     f = open(f_name,'w')
     f.write("#EXTM3U\n")
     for dt in data :
@@ -101,7 +101,7 @@ def m3u_download():
     #print(g.user['username'])
     #return send_from_directory(current_app.instance_path + "/u_fls/", filename=g.user['username'] + "_playlist.m3u8", as_attachment=True)
     fp = os.path.join(current_app.instance_path, 'u_fls')
-    fn = g.user['id'] + "_playlist.m3u8"
+    fn = str(g.user['id']) + "_playlist.m3u8"
     if os.path.exists(fp + '/' + fn) :
         return send_from_directory(os.path.abspath(fp), fn, as_attachment=True)
     else :
