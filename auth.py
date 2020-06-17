@@ -117,13 +117,23 @@ def process_email(email) :
 
 @bp.route('/yandex', methods=('GET', 'POST'))
 def yandex():
+    secrets = get_db().execute(
+        "SELECT * FROM secrets WHERE title = 'Yandex'"
+    ).fetchone()
+    
     mdata = {
         'grant_type' : 'authorization_code',
-        'client_id' : '049c68e5c66c440f8c736d006d4a5989',
-        'client_secret' : 'c883e85c44284a849556cc0027882d58'
+        'client_id' : secrets['client_id'],
+        'client_secret' : secrets['client_secret'],
+        'redirect_uri' : secrets['redirect_uri']
     }
-    if 'code' in request.args :
+    if 'code' not in request.args :
+        auth_uri = ("https://oauth.yandex.ru/authorize?response_type=code&client_id={}&redirect_uri={}".
+        format(mdata['client_id'], mdata['redirect_uri']))
+        return redirect(auth_uri)
+    else :
         mdata['code'] = request.args['code']
+        mdata.pop('redirect_uri', None)
         r = requests.post('https://oauth.yandex.ru/token', data = mdata)
         print(r.json())
         if 'access_token' in r.json() :
@@ -135,12 +145,14 @@ def yandex():
 
 @bp.route('/google', methods=('GET', 'POST'))
 def google():
+    secrets = get_db().execute(
+        "SELECT * FROM secrets WHERE title = 'Google'"
+    ).fetchone()
     mdata = {
     'response_type' : 'code',
-    'client_id' : '1059153616307-a60m0vusroenkvs0uft36ndon71su2jd.apps.googleusercontent.com',
-    'client_secret' : 'cTcMehGeuTvKWLe1gDM5jZ5w',
-    #'redirect_uri' : "http://a.abp-te.tk:48889/auth/google",
-    'redirect_uri' : "https://abp-m3u.tk/auth/google",
+    'client_id' : secrets['client_id'],
+    'client_secret' : secrets['client_secret'],
+    'redirect_uri' : secrets['redirect_uri'],
     'scope' : 'https://www.googleapis.com/auth/userinfo.email',
     'grant_type': 'authorization_code'
     }

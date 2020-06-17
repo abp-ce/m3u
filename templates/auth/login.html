@@ -13,8 +13,7 @@
     <input type="submit" value="{{ _('Log In') }}">
     <div style="display: flex; align-items: center;">
       <span>{{ _('Sign in with') }}</span>
-      <!--a href="https://oauth.yandex.ru/authorize?response_type=code&client_id=049c68e5c66c440f8c736d006d4a5989&redirect_uri=http://a.abp-te.tk:48889/auth/yandex"-->
-      <a href="https://oauth.yandex.ru/authorize?response_type=code&client_id=049c68e5c66c440f8c736d006d4a5989&redirect_uri=https://abp-m3u.tk/auth/yandex">
+      <a href="{{ url_for('auth.yandex') }}">
         <img alt = "{{ _('Yandex login') }}" src="{{ url_for('static', filename='yandex_logo.png') }}" width="80"></a>
       <a href="{{ url_for('auth.google') }}">
         <img alt = "{{ _('Google login') }}" src="{{ url_for('static', filename='google_logo.png') }}" width="70"></a>
