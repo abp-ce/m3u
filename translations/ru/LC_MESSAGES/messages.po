@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-17 16:57+0500\n"
+"POT-Creation-Date: 2020-06-19 13:23+0500\n"
 "PO-Revision-Date: 2020-06-08 20:21+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -63,21 +63,21 @@ msgstr "M3U редактор"
 msgid "IPTV M3U playlist editor"
 msgstr "IPTV M3U плейлист редактор"
 
-#: m3u/templates/base.html:21
+#: m3u/templates/base.html:11
 msgid "M3U editor"
 msgstr "M3U редактор"
 
-#: m3u/templates/base.html:25
+#: m3u/templates/base.html:15
 msgid "Log Out"
 msgstr "Выйти"
 
 #: m3u/templates/auth/register.html:4 m3u/templates/auth/register.html:13
-#: m3u/templates/base.html:27
+#: m3u/templates/base.html:17
 msgid "Register"
 msgstr "Зарегистрироваться"
 
 #: m3u/templates/auth/login.html:4 m3u/templates/auth/login.html:13
-#: m3u/templates/base.html:28
+#: m3u/templates/base.html:18
 msgid "Log In"
 msgstr "Войти"
 
@@ -128,10 +128,6 @@ msgstr "Сохранить"
 #: m3u/templates/m3u.html:54
 msgid "Download"
 msgstr "Скачать"
-
-#: m3u/templates/m3u.html:61
-msgid "Play with your player (PotPlayer)"
-msgstr "Смотреть в Вашем плеере (PotPlayer)"
 
 #: m3u/templates/m3u.html:61
 msgid "Choose channel for play"
@@ -186,4 +182,7 @@ msgstr "Зарегистрироваться через Google"
 
 #~ msgid "ap120368@gmail.com"
 #~ msgstr "abp52-mail@mail.ru"
+
+#~ msgid "Play with your player (PotPlayer)"
+#~ msgstr "Смотреть в Вашем плеере (PotPlayer)"
 

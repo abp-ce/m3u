@@ -22,9 +22,9 @@
         <input name="btn" type="submit" value="{{ _('Load') }}">
       </p>
     </div>
-    <div>
+    <div style="display: inline-flex;flex-wrap: nowrap;">
       <div style="float: left; padding: 3px">
-        <label for="Sel">{{ _('Source list') }}</label>
+        <label style="white-space: nowrap;" for="Sel">{{ _('Source list') }}</label>
         <p><select id="Sel" onchange="onchangec(this)" multiple size="10">
         <option disabled>{{ _('Choose channels') }}</option>
         {% for line in m3u.extinf %}
@@ -58,7 +58,7 @@
     </form>
     <div>
       <!--p><span id="ref">refrence</span></p-->
-      <label>{{ _('Play with your player (PotPlayer)') }}<p><a id="ref" href="">{{ _('Choose channel for play') }}</a></p></label>
+      <p><a id="ref" href="">{{ _('Choose channel for play') }}</a></p>
       <!--video id="video" type="video/mp4" poster="//vjs.zencdn.net/v/oceans.png" preload="auto" controls width="400"></video-->
       <!--object type="application/x-vlc-plugin" width="640" height="480" id="video" target="https://tvchannelstream1.tvzvezda.ru/cdn/tvzvezda/playlist_hdhigh.m3u8"></object-->
 

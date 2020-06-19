@@ -3,20 +3,9 @@
 <meta name="description" content="{{ _('IPTV M3U playlist editor') }}">
 <meta name="author" content="Andrei Polyakov">
 <meta name="yandex-verification" content="180e9fedf38f3004" />
-<meta name='viewport' content='width=device-width,initial-scale=1'/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="https://abp-m3u.tk/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<script>
-  function start() {
-    gapi.load('auth2', function() {
-      auth2 = gapi.auth2.init({ 
-        client_id: '1059153616307-a60m0vusroenkvs0uft36ndon71su2jd.apps.googleusercontent.com',
-        // Scopes to request in addition to 'profile' and 'email'
-        //scope: 'additional_scope'
-      });
-    });
-  }
-</script>
 
 <nav>
   <h1>{{ _('M3U editor') }}</h1>
