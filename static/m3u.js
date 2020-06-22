@@ -65,8 +65,12 @@ function movec() {
 
   function onchangec(sel) {
     ref.text = sel.options[sel.selectedIndex].text;
-    // ref.href = "vlc:" + sel.value;
-    ref.href = sel.value;
+    if( navigator.userAgent.match(/Android/i)
+    || navigator.userAgent.match(/iPhone/i)
+    || navigator.userAgent.match(/iPad/i)
+    || navigator.userAgent.match(/iPod/i)) { ref.href = sel.value; }
+    else { ref.href = "iptv:" + sel.value; }
+    //ref.href = sel.value;
   }
 
   function playc() {

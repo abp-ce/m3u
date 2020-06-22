@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-19 13:23+0500\n"
+"POT-Creation-Date: 2020-06-22 14:28+0500\n"
 "PO-Revision-Date: 2020-06-08 20:21+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -43,15 +43,15 @@ msgstr "Неверный пароль."
 msgid "Your registred. Please log in."
 msgstr "Вы зарегистрировались. Пожалуйста, войдите."
 
-#: m3u/m3u.py:65 m3u/templates/m3u.html:22
+#: m3u/m3u.py:69 m3u/templates/m3u.html:22
 msgid "Load"
 msgstr "Загрузить"
 
-#: m3u/m3u.py:77
+#: m3u/m3u.py:81
 msgid "Log in required"
 msgstr "Требуется войти в систему"
 
-#: m3u/m3u.py:108
+#: m3u/m3u.py:112
 msgid "File must be saved"
 msgstr "Файл должен быть сохранен"
 
@@ -80,6 +80,44 @@ msgstr "Зарегистрироваться"
 #: m3u/templates/base.html:18
 msgid "Log In"
 msgstr "Войти"
+
+#: m3u/templates/base.html:20 m3u/templates/help.html:4
+msgid "Help"
+msgstr "Помощь"
+
+#: m3u/templates/help.html:8
+msgid ""
+"To play a channel on a Windows computer, you must have a video player "
+"pre-installed,"
+msgstr "Для просмотра канала на компьютере по управлением Windows у Вас должен быть"
+
+#: m3u/templates/help.html:9
+msgid "such as VLC or PotPlayer,"
+msgstr "предустановлен видео плеер, такой как VLC или PotPlayer."
+
+#: m3u/templates/help.html:10
+msgid "You need to register a custom IPTV Protocol using a file"
+msgstr "Нужно зарегистрировать пользовательский протокол iptv с помощью файла"
+
+#: m3u/templates/help.html:11
+msgid "where to specify the path to the command file in the line"
+msgstr "где нужно указать путь к командному файлу в строке"
+
+#: m3u/templates/help.html:13
+msgid "In the command file"
+msgstr "В командном файле"
+
+#: m3u/templates/help.html:13
+msgid "you need to enter the path to your video player in the line"
+msgstr "нужно прописать путь к Вашему видео-плееру в строке"
+
+#: m3u/templates/help.html:15 m3u/templates/m3u.html:54
+msgid "Download"
+msgstr "Скачать"
+
+#: m3u/templates/help.html:16
+msgid "Home"
+msgstr "На главную"
 
 #: m3u/templates/m3u.html:20
 msgid "Playlist address"
@@ -124,10 +162,6 @@ msgstr "Удалить"
 #: m3u/templates/m3u.html:53
 msgid "Save"
 msgstr "Сохранить"
-
-#: m3u/templates/m3u.html:54
-msgid "Download"
-msgstr "Скачать"
 
 #: m3u/templates/m3u.html:61
 msgid "Choose channel for play"

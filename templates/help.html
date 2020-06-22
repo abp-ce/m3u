@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}{{ _('Help') }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<p>{{ _('To play a channel on a Windows computer, you must have a video player pre-installed,') }}<br>
+{{ _('such as VLC or PotPlayer,') }}.<br>
+{{ _('You need to register a custom IPTV Protocol using a file') }} <span style="color: royalblue;">iptv.reg</span>,<br> 
+{{ _('where to specify the path to the command file in the line') }}<br>
+<span style="color: royalblue;">@="d:\\Program Files\\VideoLAN\\VLC\\vlc.cmd \"%1\""</span>.<br>
+{{ _('In the command file') }} <span style="color: royalblue;">iptv.cmd</span> {{ _('you need to enter the path to your video player in the line') }}<br>
+<span style="color: royalblue;">@start "" "D:\Program Files\VideoLAN\VLC\vlc.exe" %str:~6%</span>.<br><br>
+{{ _('Download') }} <a href="{{ url_for('static', filename='iptv.zip') }}" download>iptv.zip</a></p>
+<a href="{{ url_for('m3u') }}">{{ _('Home') }}</a>
+{% endblock %}

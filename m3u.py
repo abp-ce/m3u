@@ -54,6 +54,10 @@ def del_m3u(e=None):
 def init_app(app):
     app.teardown_appcontext(del_m3u)
 
+@bp.route('/help')
+def help():
+    return render_template('help.html')
+
 
 @bp.route('/', methods=('GET', 'POST'))
 def m3u():
