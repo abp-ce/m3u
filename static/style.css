@@ -1,6 +1,6 @@
-html { font-family: sans-serif; background: #eee; padding: 1rem; }
+html { font-family: sans-serif; background: #eee; padding: 1rem; text-align: center;}
 /*body { max-width: 960px; margin: 0 auto; background: white; }*/
-body { display: inline-flex; flex-direction: column; margin: 0 auto; background: white; }
+body { display: inline-flex; flex-direction: column; margin: 0 auto; background: white; text-align: left;}
 h1 { font-family: serif; color: #377ba8; margin: 1rem 0; }
 a { color: #377ba8; }
 hr { border: none; border-top: 1px solid lightgray; }

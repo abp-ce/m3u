@@ -14,8 +14,10 @@
       <li><span>{{ g.user['username'] }}</span>
       <li><a href="{{ url_for('auth.logout') }}">{{ _('Log Out') }}</a>
     {% else %}
-      <li><a href="{{ url_for('auth.register') }}">{{ _('Register') }}</a>
+      <!--li><a href="{{ url_for('auth.register') }}">{{ _('Register') }}</a-->
+      {% block nav %}
       <li><a href="{{ url_for('auth.login') }}">{{ _('Log In') }}</a>
+      {% endblock %}
     {% endif %}
     <li><a href="{{ url_for('m3u.help') }}">{{ _('Help') }}</a>
   </ul>

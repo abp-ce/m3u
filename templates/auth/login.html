@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block nav %} {% endblock %}
+
 {% block header %}
   <h1>{% block title %}{{ _('Log In') }}{% endblock %}</h1>
 {% endblock %}
@@ -17,6 +19,10 @@
         <img alt = "{{ _('Yandex login') }}" src="{{ url_for('static', filename='yandex_logo.png') }}" width="80"></a>
       <a href="{{ url_for('auth.google') }}">
         <img alt = "{{ _('Google login') }}" src="{{ url_for('static', filename='google_logo.png') }}" width="70"></a>
+    </div>
+    <div>
+      <span><a href="{{ url_for('auth.register') }}">{{ _('Register') }}</a></span>
+      <span style="float: right;"><a href="{{ url_for('m3u') }}">{{ _('Home') }}</a></span>
     </div>
   </form>
 {% endblock %}
