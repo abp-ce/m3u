@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-22 14:28+0500\n"
+"POT-Creation-Date: 2020-06-23 11:59+0500\n"
 "PO-Revision-Date: 2020-06-08 20:21+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -89,7 +89,9 @@ msgstr "Помощь"
 msgid ""
 "To play a channel on a Windows computer, you must have a video player "
 "pre-installed,"
-msgstr "Для просмотра канала на компьютере по управлением Windows у Вас должен быть"
+msgstr ""
+"Для просмотра канала на компьютере по управлением Windows у Вас должен "
+"быть"
 
 #: m3u/templates/help.html:9
 msgid "such as VLC or PotPlayer,"
@@ -168,8 +170,8 @@ msgid "Choose channel for play"
 msgstr "Выберите канал для просмотра"
 
 #: m3u/templates/m3u.html:67
-msgid "Author: Andrei Polyakov"
-msgstr "Автор: Андрей Поляков"
+msgid "Andrei Polyakov"
+msgstr "Андрей Поляков"
 
 #: m3u/templates/m3u.html:68
 msgid "mailto:ap120368+web@gmail.com"
@@ -219,4 +221,7 @@ msgstr "Зарегистрироваться через Google"
 
 #~ msgid "Play with your player (PotPlayer)"
 #~ msgstr "Смотреть в Вашем плеере (PotPlayer)"
+
+#~ msgid "Author: Andrei Polyakov"
+#~ msgstr "Автор: Андрей Поляков"
 
