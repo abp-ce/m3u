@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-23 11:59+0500\n"
+"POT-Creation-Date: 2020-07-08 19:38+0500\n"
 "PO-Revision-Date: 2020-06-08 20:21+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -43,15 +43,15 @@ msgstr "Неверный пароль."
 msgid "Your registred. Please log in."
 msgstr "Вы зарегистрировались. Пожалуйста, войдите."
 
-#: m3u/m3u.py:69 m3u/templates/m3u.html:22
+#: m3u/m3u.py:72 m3u/templates/m3u.html:22
 msgid "Load"
 msgstr "Загрузить"
 
-#: m3u/m3u.py:81
+#: m3u/m3u.py:84
 msgid "Log in required"
 msgstr "Требуется войти в систему"
 
-#: m3u/m3u.py:112
+#: m3u/m3u.py:139
 msgid "File must be saved"
 msgstr "Файл должен быть сохранен"
 
@@ -71,17 +71,17 @@ msgstr "M3U редактор"
 msgid "Log Out"
 msgstr "Выйти"
 
-#: m3u/templates/auth/register.html:4 m3u/templates/auth/register.html:13
-#: m3u/templates/base.html:17
+#: m3u/templates/auth/login.html:24 m3u/templates/auth/register.html:6
+#: m3u/templates/auth/register.html:15 m3u/templates/base.html:17
 msgid "Register"
 msgstr "Зарегистрироваться"
 
-#: m3u/templates/auth/login.html:4 m3u/templates/auth/login.html:13
-#: m3u/templates/base.html:18
+#: m3u/templates/auth/login.html:6 m3u/templates/auth/login.html:15
+#: m3u/templates/auth/register.html:24 m3u/templates/base.html:19
 msgid "Log In"
 msgstr "Войти"
 
-#: m3u/templates/base.html:20 m3u/templates/help.html:4
+#: m3u/templates/base.html:22 m3u/templates/help.html:4
 msgid "Help"
 msgstr "Помощь"
 
@@ -117,6 +117,7 @@ msgstr "нужно прописать путь к Вашему видео-пле
 msgid "Download"
 msgstr "Скачать"
 
+#: m3u/templates/auth/login.html:25 m3u/templates/auth/register.html:25
 #: m3u/templates/help.html:16
 msgid "Home"
 msgstr "На главную"
@@ -169,47 +170,59 @@ msgstr "Сохранить"
 msgid "Choose channel for play"
 msgstr "Выберите канал для просмотра"
 
-#: m3u/templates/m3u.html:67
+#: m3u/templates/m3u.html:63
+msgid "Previos programme"
+msgstr "Предыдущая программа"
+
+#: m3u/templates/m3u.html:64
+msgid "Current programme"
+msgstr "Текущая программа"
+
+#: m3u/templates/m3u.html:65
+msgid "Next programme"
+msgstr "Следующая программа"
+
+#: m3u/templates/m3u.html:73
 msgid "Andrei Polyakov"
 msgstr "Андрей Поляков"
 
-#: m3u/templates/m3u.html:68
+#: m3u/templates/m3u.html:74
 msgid "mailto:ap120368+web@gmail.com"
 msgstr "mailto:abp52-mail@mail.ru"
 
-#: m3u/templates/m3u.html:68
+#: m3u/templates/m3u.html:74
 msgid "ap120368+web@gmail.com"
 msgstr "abp52-mail@mail.ru"
 
-#: m3u/templates/auth/login.html:9 m3u/templates/auth/register.html:9
+#: m3u/templates/auth/login.html:11 m3u/templates/auth/register.html:11
 msgid "Username"
 msgstr "Пользователь"
 
-#: m3u/templates/auth/login.html:11 m3u/templates/auth/register.html:11
+#: m3u/templates/auth/login.html:13 m3u/templates/auth/register.html:13
 msgid "Password"
 msgstr "Пароль"
 
-#: m3u/templates/auth/login.html:15
+#: m3u/templates/auth/login.html:17
 msgid "Sign in with"
 msgstr "Войти с помощью"
 
-#: m3u/templates/auth/login.html:17
+#: m3u/templates/auth/login.html:19
 msgid "Yandex login"
 msgstr "Вход через Яндекс"
 
-#: m3u/templates/auth/login.html:19
+#: m3u/templates/auth/login.html:21
 msgid "Google login"
 msgstr "Вход через Google"
 
-#: m3u/templates/auth/register.html:15
+#: m3u/templates/auth/register.html:17
 msgid "Register with"
 msgstr "Зарегистрироваться с помощью"
 
-#: m3u/templates/auth/register.html:17
+#: m3u/templates/auth/register.html:19
 msgid "Yandex register"
 msgstr "Зарегистрироваться через Яндекс"
 
-#: m3u/templates/auth/register.html:19
+#: m3u/templates/auth/register.html:21
 msgid "Google register"
 msgstr "Зарегистрироваться через Google"
 
