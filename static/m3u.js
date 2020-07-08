@@ -63,6 +63,56 @@ function movec() {
     RSel.add(opt,n+1);
   }
 
+  function get_epg(ch, dt=null) {
+    let jsn = {};
+    if (dt == null) dt = new Date();
+    jsn["date"] = dt.toISOString();
+    jsn["name"] = ch;
+    jss = JSON.stringify(jsn);
+    fetch('/m3u/select', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: jss
+    }).then(function(response) {
+      response.json().then(function(rsp) {
+        if (rsp["start"] === "") tm.innerHTML = prev.innerHTML = now.innerHTML = next.innerHTML = "";
+        else {
+          let start = new Date(rsp["start"]);
+          let stop = new Date(rsp["stop"]); 
+          tm.dataset.start = rsp["start"];
+          tm.dataset.stop = rsp["stop"];
+          tm.innerHTML = start.toTimeString().slice(0,5) + " - " + stop.toTimeString().slice(0,5);
+          prev.innerHTML = "<<";
+          now.innerHTML = "==";
+          next.innerHTML = ">>";
+        }
+        ttl.innerHTML = rsp["title"];
+        desc.innerHTML = rsp["desc"];
+        delete start;
+        delete stop; 
+    })
+    })
+    delete nw;
+  }
+  
+  function prevc() {
+    t = new Date(tm.dataset.start);
+    t.setMinutes(t.getMinutes() - 1)
+    get_epg(ref.text, t)
+  }
+
+  function nowc() {
+    get_epg(ref.text)
+  }
+
+  function nextc() {
+    t = new Date(tm.dataset.stop);
+    t.setMinutes(t.getMinutes() + 1)
+    get_epg(ref.text, t)
+  }
+
   function onchangec(sel) {
     ref.text = sel.options[sel.selectedIndex].text;
     if( navigator.userAgent.match(/Android/i)
@@ -71,6 +121,7 @@ function movec() {
     || navigator.userAgent.match(/iPod/i)) { ref.href = sel.value; }
     else { ref.href = "iptv:" + sel.value; }
     //ref.href = sel.value;
+    get_epg(ref.text);
   }
 
   function playc() {

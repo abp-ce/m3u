@@ -5,6 +5,9 @@ from flask import (
 from flask_babel import _
 import urllib
 import os
+import json
+from datetime import datetime, timedelta
+import xml.etree.ElementTree as ET
 from m3u.auth import login_required
 from m3u.db import get_db
 from . import M3Uclass
@@ -80,7 +83,7 @@ def m3u_save():
     if not g.user :
         return (_("Log in required"))
     data = request.get_json()
-    print(data)
+    #print(data)
     f_name = current_app.instance_path + "/u_fls/" + str(g.user['id']) + "_playlist.m3u8"
     f = open(f_name,'w')
     f.write("#EXTM3U\n")
@@ -96,6 +99,30 @@ def m3u_save():
     )
     db.commit()
     return "OK"
+
+@bp.route('/m3u/select', methods=['POST'])
+def m3u_select():
+    data = request.get_json()
+    st = data['date']
+    #print(st)
+    date = datetime(int(st[:4]), int(st[5:7]), int(st[8:10]), int(st[11:13]), int(st[14:16]), int(st[17:19]))
+    res = get_db(epg=True).execute(
+        'SELECT pstart, pstop, title, pdesc '
+        ' FROM programme p JOIN channel c ON p.channel = c.ch_id '
+        ' WHERE disp_name = ? AND pstart < ? AND pstop > ? ORDER BY pstart',
+        (data['name'].lower(),date,date)
+    ).fetchall()
+    jsn = {}
+    if res:
+        for r in res:
+            jsn['start'] = r['pstart'].strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            jsn['stop'] = r['pstop'].strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            jsn['title'] = r['title']
+            jsn['desc'] = r['pdesc']
+    else: 
+        jsn['start'] = jsn['stop'] = jsn['title'] = jsn['desc'] =''
+    return json.dumps(jsn)
+
 
 @bp.route('/m3u/download')
 @login_required

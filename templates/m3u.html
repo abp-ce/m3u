@@ -56,9 +56,15 @@
       </div>
     </div>
     </form>
-    <div>
+    <div style="width: 700px;">
       <!--p><span id="ref">refrence</span></p-->
-      <p><a id="ref" href="">{{ _('Choose channel for play') }}</a></p>
+      <p style="margin: 2px; padding: 2px;"><a id="ref" href="">{{ _('Choose channel for play') }}</a></p>
+      <p id="tm" style="font-size: x-small; margin: 0px; padding: 0px;"></p>
+      <span id="prev" title="{{ _('Previos programme') }}" onclick="prevc()" style="cursor: pointer; font-size: small; margin-right: 10px;"></span>
+      <span id="now" title="{{ _('Current programme') }}" onclick="nowc()" style="cursor: pointer; font-size: small; margin-right: 10px;"></span>
+      <span id="next" title="{{ _('Next programme') }}" onclick="nextc()" style="cursor: pointer; font-size: small; margin-right: 10px;"></span>
+      <p id="ttl" style="font-size: small; margin: 0px; padding: 0px;"></p>
+      <p id="desc" style="font-size: x-small; margin: 0px; padding: 0px;"></p>
       <!--video id="video" type="video/mp4" poster="//vjs.zencdn.net/v/oceans.png" preload="auto" controls width="400"></video-->
       <!--object type="application/x-vlc-plugin" width="640" height="480" id="video" target="https://tvchannelstream1.tvzvezda.ru/cdn/tvzvezda/playlist_hdhigh.m3u8"></object-->
 
