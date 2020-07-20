@@ -31,7 +31,8 @@ function movec() {
       },
       body: jss
     }).then(function(response) {
-      response.text().then(function(myText){alert(myText);})
+      if (response.redirected) window.location.href = response.url;
+      else response.text().then(function(myText){alert(myText);})
     })
   }
 

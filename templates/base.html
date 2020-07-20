@@ -11,7 +11,7 @@
   <h1>{{ _('M3U editor') }}</h1>
   <ul>
     {% if g.user %}
-      <li><span>{{ g.user['username'] }}</span>
+      <li><span data-id="{{ g.user['id'] }}">{{ g.user['username'] }}</span>
       <li><a href="{{ url_for('auth.logout') }}">{{ _('Log Out') }}</a>
     {% else %}
       <!--li><a href="{{ url_for('auth.register') }}">{{ _('Register') }}</a-->

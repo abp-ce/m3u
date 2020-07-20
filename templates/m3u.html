@@ -38,7 +38,13 @@
         <p><input name="btn" type="button" onclick="unselectc()" title="{{ _('Unselect') }}" value="{{ _('<- Unselect ->') }}"></p>
       </div>
       <div style="float: left; padding: 3px">
-        <label for="RSel">{{ _('Your list') }}</label>
+        <label for="RSel">
+          {% if g.user %}
+            <a id="pllst" href="/m3u/download/{{g.user['id']}}_playlist.m3u8">{{ _('Your list') }}</a>
+          {% else %}
+            {{ _('Your list') }}
+          {% endif %}
+        </label>
         <p><select name="RSel" id="RSel" onchange="onchangec(this)" multiple size="10">
         <option disabled>{{ _('Choose channels') }}</option>
         {% for line in resm3u.extinf %}
@@ -51,7 +57,7 @@
         <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="downc()" value="{{ _('Down') }}"></p>
         <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="deletec()" value="{{ _('Delete') }}"></p>
         <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="savec()" value="{{ _('Save') }}"></p>
-        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="window.location.href='/m3u/download';" value="{{ _('Download') }}"></p>
+        <!--p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="window.location.href='/m3u/download';" value="{{ _('Download') }}"></p-->
         <!--p><a id="f_ref" href="/m3u/download" download>Download file</a></p-->
       </div>
     </div>

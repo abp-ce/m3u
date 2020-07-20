@@ -6,6 +6,8 @@ from flask_babel import _
 import urllib
 import os
 import json
+import string
+import random
 from datetime import datetime, timedelta
 import xml.etree.ElementTree as ET
 from m3u.auth import login_required
@@ -78,13 +80,12 @@ def m3u():
     return render_template('m3u.html', m3u=m3u, resm3u=resm3u)
 
 @bp.route('/m3u/save', methods=['POST'])
-#@login_required
+@login_required
 def m3u_save():
-    if not g.user :
-        return (_("Log in required"))
     data = request.get_json()
-    #print(data)
-    f_name = current_app.instance_path + "/u_fls/" + str(g.user['id']) + "_playlist.m3u8"
+    rnd = ''.join(random.choice(string.ascii_letters) for i in range(5))
+    f_n = str(g.user['id']) + rnd + "_playlist.m3u8"
+    f_name = current_app.instance_path + "/u_fls/" + f_n
     f = open(f_name,'w')
     f.write("#EXTM3U\n")
     for dt in data :
@@ -98,25 +99,35 @@ def m3u_save():
         ("You m3u", f_name, g.user['id'])
     )
     db.commit()
-    return "OK"
+    return f_n
 
 @bp.route('/m3u/select', methods=['POST'])
 def m3u_select():
     data = request.get_json()
     st = data['date']
-    #print(st)
-    date = datetime(int(st[:4]), int(st[5:7]), int(st[8:10]), int(st[11:13]), int(st[14:16]), int(st[17:19]))
+    nm = data['name'].lower().rstrip().rstrip(')')
+    shft = 0
+    if '+' in nm : 
+        pos = nm.find('+')
+        shft = int(nm[pos:])
+        nm = nm[:pos].rstrip('(').rstrip()
+    elif '-' in nm : 
+        pos = nm.find('-')
+        shft = int(nm[pos:])
+        nm = nm[:pos].rstrip('(').rstrip()
+    print(nm)
+    date = datetime(int(st[:4]), int(st[5:7]), int(st[8:10]), int(st[11:13]) + shft, int(st[14:16]), int(st[17:19]))
     res = get_db(epg=True).execute(
         'SELECT pstart, pstop, title, pdesc '
         ' FROM programme p JOIN channel c ON p.channel = c.ch_id '
         ' WHERE disp_name = ? AND pstart < ? AND pstop > ? ORDER BY pstart',
-        (data['name'].lower(),date,date)
+        (nm,date,date)
     ).fetchall()
     jsn = {}
     if res:
         for r in res:
-            jsn['start'] = r['pstart'].strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-            jsn['stop'] = r['pstop'].strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            jsn['start'] = (r['pstart'] - timedelta(hours=shft)).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            jsn['stop'] = (r['pstop'] - timedelta(hours=shft)).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
             jsn['title'] = r['title']
             jsn['desc'] = r['pdesc']
     else: 
@@ -124,16 +135,20 @@ def m3u_select():
     return json.dumps(jsn)
 
 
-@bp.route('/m3u/download')
-@login_required
-def m3u_download():
-    #print("here")
-    #print(current_app.instance_path)
-    #print(g.user['username'])
-    #return send_from_directory(current_app.instance_path + "/u_fls/", filename=g.user['username'] + "_playlist.m3u8", as_attachment=True)
-    fp = os.path.join(current_app.instance_path, 'u_fls')
-    fn = str(g.user['id']) + "_playlist.m3u8"
-    if os.path.exists(fp + '/' + fn) :
+@bp.route('/m3u/download/<filename>')
+#@login_required
+def m3u_download(filename):
+    id = filename[:filename.find('_')]
+    post = get_db().execute(
+        'SELECT list '
+        ' FROM m3u '
+        ' WHERE author_id = ?',
+        (id,)
+    ).fetchone()
+    if os.path.exists(post['list']) :
+        pos = post['list'].rfind('/')
+        fp = post['list'][:pos]
+        fn = post['list'][pos+1:]
         return send_from_directory(os.path.abspath(fp), fn, as_attachment=True)
     else :
         return abort(404,_("File must be saved"))
