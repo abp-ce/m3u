@@ -114,26 +114,31 @@ function movec() {
     get_epg(ref.text, t)
   }
 
-  function onchangec(sel) {
-    ref.text = sel.options[sel.selectedIndex].text;
+  function isMobile() {
     if( navigator.userAgent.match(/Android/i)
     || navigator.userAgent.match(/iPhone/i)
     || navigator.userAgent.match(/iPad/i)
-    || navigator.userAgent.match(/iPod/i)) { ref.href = sel.value; }
-    else { ref.href = "iptv:" + sel.value; }
+    || navigator.userAgent.match(/iPod/i)) return true;
+    return false;
+  }
+  function onchangec(sel) {
+    ref.text = sel.options[sel.selectedIndex].text;
+    if( isMobile() ) ref.href = sel.value;
+    else if(ext.checked) ref.href = "iptv:" + sel.value;
+      else playc(sel);
     //ref.href = sel.value;
     get_epg(ref.text);
   }
 
-  function playc() {
+  function playc(sel) {
     /* video.target = Sel.value
     var player = videojs('video',{techOrder: ['flash', 'html5']});
     player.src(Sel.value);
     player.play() 
     let n = Sel.selectedIndex;*/
-    var video = document.getElementById('video');
+    //var video = document.getElementById('video');
     // var videoSrc = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
-    var videoSrc = "http://127.0.0.1:8080/1"//Sel.value;
+    var videoSrc = sel.value;
     if (Hls.isSupported()) {
       var hls = new Hls();
       hls.loadSource(videoSrc);
@@ -157,8 +162,17 @@ function movec() {
     // listened-for when the URL is not on the white-list is 'loadedmetadata'.
     else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = videoSrc;
-      video.addEventListener('loadedmetadata', function() {
-        video.play();
-      }); 
+      //video.addEventListener('loadedmetadata', function() {
+      //  video.play();
+      //}); 
     }
+  }
+
+  function ext_player() {
+    //alert(ext.checked);
+    if (ext.checked) {
+      video.pause();
+      video.hidden = true;
+    }
+    else video.hidden = false;
   }

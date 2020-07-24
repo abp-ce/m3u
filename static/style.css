@@ -26,3 +26,4 @@ nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
 input.danger { color: #cc2f2e; }
 input[type=submit] { align-self: start; min-width: 10em; } 
 input[type=button] { align-self: start; min-width: 10em; }
+.arrow { cursor: pointer; font-size: small; color: #377ba8; margin-right: 10px; }

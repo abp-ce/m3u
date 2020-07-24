@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-08 19:38+0500\n"
+"POT-Creation-Date: 2020-07-24 11:33+0500\n"
 "PO-Revision-Date: 2020-06-08 20:21+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -39,19 +39,15 @@ msgstr "Неверное имя пользователя."
 msgid "Incorrect password."
 msgstr "Неверный пароль."
 
-#: m3u/auth.py:113
+#: m3u/auth.py:114
 msgid "Your registred. Please log in."
 msgstr "Вы зарегистрировались. Пожалуйста, войдите."
 
-#: m3u/m3u.py:72 m3u/templates/m3u.html:22
+#: m3u/m3u.py:74 m3u/templates/m3u.html:22
 msgid "Load"
 msgstr "Загрузить"
 
-#: m3u/m3u.py:84
-msgid "Log in required"
-msgstr "Требуется войти в систему"
-
-#: m3u/m3u.py:139
+#: m3u/m3u.py:154
 msgid "File must be saved"
 msgstr "Файл должен быть сохранен"
 
@@ -86,16 +82,12 @@ msgid "Help"
 msgstr "Помощь"
 
 #: m3u/templates/help.html:8
-msgid ""
-"To play a channel on a Windows computer, you must have a video player "
-"pre-installed,"
-msgstr ""
-"Для просмотра канала на компьютере по управлением Windows у Вас должен "
-"быть"
+msgid "To play a programme in external player on a Windows computer,"
+msgstr "Для просмотра программы во внешнем плеере на компьютере с Windows"
 
 #: m3u/templates/help.html:9
-msgid "such as VLC or PotPlayer,"
-msgstr "предустановлен видео плеер, такой как VLC или PotPlayer."
+msgid "you must have a video player pre-installed such as VLC or PotPlayer"
+msgstr "у Вас должен быть предустановлен видео плеер, такой как VLC или PotPlayer"
 
 #: m3u/templates/help.html:10
 msgid "You need to register a custom IPTV Protocol using a file"
@@ -113,7 +105,7 @@ msgstr "В командном файле"
 msgid "you need to enter the path to your video player in the line"
 msgstr "нужно прописать путь к Вашему видео-плееру в строке"
 
-#: m3u/templates/help.html:15 m3u/templates/m3u.html:54
+#: m3u/templates/help.html:15 m3u/templates/m3u.html:60
 msgid "Download"
 msgstr "Скачать"
 
@@ -130,7 +122,7 @@ msgstr "Адрес плейлиста"
 msgid "Source list"
 msgstr "Лист-источник"
 
-#: m3u/templates/m3u.html:29 m3u/templates/m3u.html:43
+#: m3u/templates/m3u.html:29 m3u/templates/m3u.html:49
 msgid "Choose channels"
 msgstr "Выберите каналы"
 
@@ -146,51 +138,59 @@ msgstr "Снять выделение"
 msgid "<- Unselect ->"
 msgstr "<- X выбор ->"
 
-#: m3u/templates/m3u.html:41
+#: m3u/templates/m3u.html:43 m3u/templates/m3u.html:45
 msgid "Your list"
 msgstr "Ваш лист"
 
-#: m3u/templates/m3u.html:50
+#: m3u/templates/m3u.html:56
 msgid "Up"
 msgstr "Вверх"
 
-#: m3u/templates/m3u.html:51
+#: m3u/templates/m3u.html:57
 msgid "Down"
 msgstr "Вниз"
 
-#: m3u/templates/m3u.html:52
+#: m3u/templates/m3u.html:58
 msgid "Delete"
 msgstr "Удалить"
 
-#: m3u/templates/m3u.html:53
+#: m3u/templates/m3u.html:59
 msgid "Save"
 msgstr "Сохранить"
 
-#: m3u/templates/m3u.html:61
+#: m3u/templates/m3u.html:68
+msgid "See Help"
+msgstr "Смотри Помощь"
+
+#: m3u/templates/m3u.html:68 m3u/templates/m3u.html:72
+msgid "Play in an external player"
+msgstr "Использовать внешний плеер"
+
+#: m3u/templates/m3u.html:78
 msgid "Choose channel for play"
 msgstr "Выберите канал для просмотра"
 
-#: m3u/templates/m3u.html:63
+#: m3u/templates/m3u.html:80
 msgid "Previos programme"
 msgstr "Предыдущая программа"
 
-#: m3u/templates/m3u.html:64
+#: m3u/templates/m3u.html:81
 msgid "Current programme"
 msgstr "Текущая программа"
 
-#: m3u/templates/m3u.html:65
+#: m3u/templates/m3u.html:82
 msgid "Next programme"
 msgstr "Следующая программа"
 
-#: m3u/templates/m3u.html:73
+#: m3u/templates/m3u.html:97
 msgid "Andrei Polyakov"
 msgstr "Андрей Поляков"
 
-#: m3u/templates/m3u.html:74
+#: m3u/templates/m3u.html:98
 msgid "mailto:ap120368+web@gmail.com"
 msgstr "mailto:abp52-mail@mail.ru"
 
-#: m3u/templates/m3u.html:74
+#: m3u/templates/m3u.html:98
 msgid "ap120368+web@gmail.com"
 msgstr "abp52-mail@mail.ru"
 
@@ -237,4 +237,24 @@ msgstr "Зарегистрироваться через Google"
 
 #~ msgid "Author: Andrei Polyakov"
 #~ msgstr "Автор: Андрей Поляков"
+
+#~ msgid "Log in required"
+#~ msgstr "Требуется войти в систему"
+
+#~ msgid ""
+#~ "To play a channel on a Windows "
+#~ "computer, you must have a video "
+#~ "player pre-installed,"
+#~ msgstr ""
+#~ "Для просмотра канала на компьютере по"
+#~ " управлением Windows у Вас должен "
+#~ "быть"
+
+#~ msgid "such as VLC or PotPlayer,"
+#~ msgstr "предустановлен видео плеер, такой как VLC или PotPlayer."
+
+#~ msgid "you must have a video player pre-installed such as VLC or PotPlayer,"
+#~ msgstr ""
+#~ "у Вас должен быть предустановлен видео"
+#~ " плеер, такой как VLC или PotPlayer."
 
