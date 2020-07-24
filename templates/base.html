@@ -6,10 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="https://abp-m3u.tk/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
+<script type="text/javascript" src="{{ url_for('static', filename='m3u.js') }}"> </script>
 <nav>
   <h1>{{ _('M3U editor') }}</h1>
-  <ul>
+  <ul id="menu">
     {% if g.user %}
       <li><span data-id="{{ g.user['id'] }}">{{ g.user['username'] }}</span>
       <li><a href="{{ url_for('auth.logout') }}">{{ _('Log Out') }}</a>
@@ -19,7 +19,10 @@
       <li><a href="{{ url_for('auth.login') }}">{{ _('Log In') }}</a>
       {% endblock %}
     {% endif %}
-    <li><a href="{{ url_for('m3u.help') }}">{{ _('Help') }}</a>
+    <script>
+      if (isMobile() == false) 
+        menu.insertAdjacentHTML('beforeend', "<li><a href='{{ url_for('m3u.help') }}'>{{ _('Help') }}</a>");
+    </script>
   </ul>
 </nav>
 <section class="content">
