@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-24 11:33+0500\n"
+"POT-Creation-Date: 2020-07-24 12:31+0500\n"
 "PO-Revision-Date: 2020-06-08 20:21+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -82,35 +82,41 @@ msgid "Help"
 msgstr "Помощь"
 
 #: m3u/templates/help.html:8
-msgid "To play a programme in external player on a Windows computer,"
-msgstr "Для просмотра программы во внешнем плеере на компьютере с Windows"
+msgid ""
+"To play programmes in the browser you must allow unsecured content in the"
+" browser settings"
+msgstr "Для просмотра программ в браузере Вы должны разрешить небезопасный контент в настройках браузера"
 
-#: m3u/templates/help.html:9
+#: m3u/templates/help.html:10
+msgid "To play a programmes in external player on a Windows computer"
+msgstr "Для просмотра программ во внешнем плеере на компьютере с Windows"
+
+#: m3u/templates/help.html:11
 msgid "you must have a video player pre-installed such as VLC or PotPlayer"
 msgstr "у Вас должен быть предустановлен видео плеер, такой как VLC или PotPlayer"
 
-#: m3u/templates/help.html:10
+#: m3u/templates/help.html:12
 msgid "You need to register a custom IPTV Protocol using a file"
 msgstr "Нужно зарегистрировать пользовательский протокол iptv с помощью файла"
 
-#: m3u/templates/help.html:11
+#: m3u/templates/help.html:13
 msgid "where to specify the path to the command file in the line"
 msgstr "где нужно указать путь к командному файлу в строке"
 
-#: m3u/templates/help.html:13
+#: m3u/templates/help.html:15
 msgid "In the command file"
 msgstr "В командном файле"
 
-#: m3u/templates/help.html:13
+#: m3u/templates/help.html:15
 msgid "you need to enter the path to your video player in the line"
 msgstr "нужно прописать путь к Вашему видео-плееру в строке"
 
-#: m3u/templates/help.html:15 m3u/templates/m3u.html:60
+#: m3u/templates/help.html:17 m3u/templates/m3u.html:60
 msgid "Download"
 msgstr "Скачать"
 
 #: m3u/templates/auth/login.html:25 m3u/templates/auth/register.html:25
-#: m3u/templates/help.html:16
+#: m3u/templates/help.html:18
 msgid "Home"
 msgstr "На главную"
 
@@ -257,4 +263,16 @@ msgstr "Зарегистрироваться через Google"
 #~ msgstr ""
 #~ "у Вас должен быть предустановлен видео"
 #~ " плеер, такой как VLC или PotPlayer."
+
+#~ msgid "To play a programme in external player on a Windows computer,"
+#~ msgstr "Для просмотра программы во внешнем плеере на компьютере с Windows"
+
+#~ msgid "To play a programmes in external player on a Windows computer,"
+#~ msgstr "Для просмотра программ во внешнем плеере на компьютере с Windows"
+
+#~ msgid ""
+#~ "To play programmes in the browser, "
+#~ "you must allow unsecured content in "
+#~ "the browser settings"
+#~ msgstr ""
 
