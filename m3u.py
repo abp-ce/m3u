@@ -82,23 +82,36 @@ def m3u():
 @bp.route('/m3u/save', methods=['POST'])
 @login_required
 def m3u_save():
+    db = get_db()
+    post = db.execute(
+        'SELECT list '
+        ' FROM m3u '
+        ' WHERE author_id = ?',
+        (g.user['id'],)
+    ).fetchone()
+    if post :
+        if post['list'] == "" :
+            rnd = ''.join(random.choice(string.ascii_letters) for i in range(5))
+            f_n = str(g.user['id']) + rnd + "_playlist.m3u8"
+            f_name = current_app.instance_path + "/u_fls/" + f_n
+            db.execute(
+                'UPDATE m3u SET title = ?, list = ?'
+                ' WHERE id = ?',
+                ("You m3u", f_name, g.user['id'])
+            )
+            db.commit()
+        else : 
+            f_name = post['list']
+            f_n = f_name[f_name.rfind('/')+1:]
+    else :
+        return "*****"
     data = request.get_json()
-    rnd = ''.join(random.choice(string.ascii_letters) for i in range(5))
-    f_n = str(g.user['id']) + rnd + "_playlist.m3u8"
-    f_name = current_app.instance_path + "/u_fls/" + f_n
     f = open(f_name,'w')
     f.write("#EXTM3U\n")
     for dt in data :
         f.write("#EXTINF:-1 ,{}\n".format(dt.rstrip('\n')))
         f.write("{}\n".format(data[dt].rstrip('\n')))
     f.close()
-    db = get_db()
-    db.execute(
-        'UPDATE m3u SET title = ?, list = ?'
-        ' WHERE id = ?',
-        ("You m3u", f_name, g.user['id'])
-    )
-    db.commit()
     return f_n
 
 @bp.route('/m3u/select', methods=['POST'])
@@ -106,6 +119,9 @@ def m3u_select():
     data = request.get_json()
     st = data['date']
     nm = data['name'].lower().rstrip().rstrip(')')
+    pos = nm.find('hd')
+    if (pos > 0) :
+        nm = nm[:pos].rstrip()
     shft = 0
     if '+' in nm : 
         pos = nm.find('+')
