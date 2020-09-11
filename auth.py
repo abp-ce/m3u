@@ -136,11 +136,11 @@ def yandex():
         mdata['code'] = request.args['code']
         mdata.pop('redirect_uri', None)
         r = requests.post('https://oauth.yandex.ru/token', data = mdata)
-        print(r.json())
+        #print(r.json())
         if 'access_token' in r.json() :
             tok = r.json()['access_token']
             r = requests.get('https://login.yandex.ru/info', params = { "oauth_token" : tok })
-            print(r.json())
+            #print(r.json())
             return process_email(r.json()['emails'][0])
     return redirect(url_for('m3u'))
 
@@ -158,19 +158,25 @@ def google():
     'grant_type': 'authorization_code'
     }
     if 'code' not in request.args:
-        print(mdata['redirect_uri'])
+        #print(mdata['redirect_uri'])
         auth_uri = ('https://accounts.google.com/o/oauth2/v2/auth?response_type={}&client_id={}&redirect_uri={}&scope={}'.
         format(mdata['response_type'], mdata['client_id'], mdata['redirect_uri'], mdata['scope']))
         return redirect(auth_uri)
     else:
         mdata['code'] = request.args.get('code')
-        print(mdata['code'])
+        #print(mdata['code'])
         mdata.pop('response_type', None)
         r = requests.post('https://oauth2.googleapis.com/token', data=mdata)
         tok = r.json()['access_token']
-        print(tok)
+        #print(tok)
         headers = {'Authorization' : 'Bearer {}'.format(tok)}
-        print(headers)
+        #print(headers)
         r = requests.get('https://www.googleapis.com/oauth2/v3/userinfo', headers=headers)
         return process_email(r.json()['email'])
     #return redirect(url_for('m3u'))
+
+@bp.route('/telegram', methods=('GET', 'POST'))
+def telegram():
+    if request.method == 'GET':
+        return process_email(request.args['id'])
+    else: return redirect(url_for('m3u'))
