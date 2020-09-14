@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from flask import Blueprint, request
+from flask import Blueprint, request, current_app
 import requests
 import json
 from datetime import datetime
@@ -7,7 +7,8 @@ from m3u.db import get_db
 
 def send_message(chat_id, lst, tp):
     method = "sendMessage"
-    token = "1371707108:AAFw6l7184tWFBh9AvldcAkfAjJPAlpnz5Q"
+    with open(current_app.instance_path +'/teletoken') as f:
+        token = f.readline()[:-1]
     url = f"https://api.telegram.org/bot{token}/{method}"
     if tp == 1 or tp == 2:
         reply_markup = {}
