@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS programme;
 CREATE TABLE channel (
   ch_id TEXT UNIQUE NOT NULL,
   disp_name TEXT UNIQUE NOT NULL,
+  disp_name_l TEXT UNIQUE NOT NULL,
   icon TEXT
 );
 

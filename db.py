@@ -75,8 +75,8 @@ def pop_epg_db_command():
                 elif c.tag == 'icon':
                     icon = c.attrib['src']
             db.execute(
-                'INSERT INTO channel (ch_id, disp_name, icon) VALUES (?, ?, ?)',
-                (ch_id, disp_name.lower(), icon)
+                'INSERT INTO channel (ch_id, disp_name, disp_name_l, icon) VALUES (?, ?, ?, ?)',
+                (ch_id, disp_name, disp_name.lower() ,icon)
             )
             #db.commit()
             elem.clear()
