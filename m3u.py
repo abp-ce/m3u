@@ -136,7 +136,7 @@ def m3u_select():
     res = get_db(epg=True).execute(
         'SELECT pstart, pstop, title, pdesc '
         ' FROM programme p JOIN channel c ON p.channel = c.ch_id '
-        ' WHERE lower(disp_name) = ? AND pstart < ? AND pstop > ? ORDER BY pstart',
+        ' WHERE disp_name_l = ? AND pstart < ? AND pstop > ? ORDER BY pstart',
         (nm,date,date)
     ).fetchall()
     jsn = {}

@@ -11,6 +11,7 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
         EPG_DATABASE=os.path.join(app.instance_path, 'epg.sqlite'),
+        TELEBOT_DATABASE=os.path.join(app.instance_path, 'telebot.sqlite'),
         LANGUAGES = {
             'en': 'English',
             'ru': 'Russian'

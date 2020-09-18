@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import xml.etree.ElementTree as ET
 
 
-def get_db(epg=False):
+def get_db(epg=False, telebot=False):
     if epg:
         if 'epg_db' not in g:
             g.epg_db = sqlite3.connect(
@@ -17,6 +17,16 @@ def get_db(epg=False):
             g.epg_db.row_factory = sqlite3.Row
 
         return g.epg_db
+    if telebot:
+        if 'telebot_db' not in g:
+            g.telebot_db = sqlite3.connect(
+                current_app.config['TELEBOT_DATABASE'],
+                detect_types=sqlite3.PARSE_DECLTYPES
+            )
+            g.telebot_db.row_factory = sqlite3.Row
+
+        return g.telebot_db
+
     if 'db' not in g:
         g.db = sqlite3.connect(
             current_app.config['DATABASE'],
@@ -33,6 +43,11 @@ def close_epg_db(e=None):
 
 def close_db(e=None):
     db = g.pop('db', None)
+    if db is not None:
+        db.close()
+
+def close_telebot_db(e=None):
+    db = g.pop('telebot_db', None)
     if db is not None:
         db.close()
 
@@ -114,6 +129,7 @@ def init_epg_command():
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.teardown_appcontext(close_epg_db)
+    app.teardown_appcontext(close_telebot_db)
     app.cli.add_command(init_db_command)
     app.cli.add_command(pop_db_command)
     app.cli.add_command(init_epg_command)

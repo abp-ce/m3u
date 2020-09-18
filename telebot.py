@@ -2,7 +2,7 @@
 from flask import Blueprint, request, current_app
 import requests
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from m3u.db import get_db
 
 def send_message(chat_id, lst, tp):
@@ -10,7 +10,7 @@ def send_message(chat_id, lst, tp):
     with open(current_app.instance_path +'/teletoken') as f:
         token = f.readline()[:-1]
     url = f"https://api.telegram.org/bot{token}/{method}"
-    if tp == 1 or tp == 2:
+    if tp == 1 or tp == 2 or tp == 5:
         reply_markup = {}
         l0 = []
         l1 = []
@@ -30,6 +30,7 @@ def send_message(chat_id, lst, tp):
             else: s = l
             text += f"{i}. {s}.\n"
             if tp == 1: s = '$' + s
+            if tp == 5: s = '#' + s
             l0.append({'text': str(i), 'callback_data': s})
             i += 1
         l1.append(l0)
@@ -37,19 +38,26 @@ def send_message(chat_id, lst, tp):
         r_m = json.dumps(reply_markup)
         data = {"chat_id": chat_id, "text": text, "reply_markup": r_m}
     elif tp == 3:
-        text = '<b>' + lst[0] + '\n</b>' + '<i>' + lst[1] + '\n</i>' + '<b><i>' + lst[2] + '\n</i></b>' + lst[3] + '\n'
-        data = {"chat_id": chat_id, "text": text, 'parse_mode': 'HTML'}
+        sql = 'SELECT shift FROM telebot WHERE chat_id = ?'
+        res = get_db(telebot=True).execute(sql, (chat_id,)).fetchone()
+        if res: period = ((lst[1] + timedelta(minutes=res['shift'])).strftime("%H:%M") + ' - ' + 
+                (lst[2] + timedelta(minutes=res['shift'])).strftime("%H:%M"))
+        else: period = lst[1].strftime("%H:%M") + ' - ' + lst[2].strftime("%H:%M") + 'UTC'
+
+        text = '<b>' + lst[0] + '\n</b>' + '<i>' + period + '\n</i>' + '<b><i>' + lst[3] + '\n</i></b>' + lst[4] + '\n'
+        reply_markup = ({'inline_keyboard': [[{'text': '<<', 'callback_data': f"<{lst[0]};{lst[1]}"}, 
+                                              {'text': '==', 'callback_data': lst[0]}, 
+                                              {'text': '>>', 'callback_data': f">{lst[0]};{lst[2]}"}]]})
+        r_m = json.dumps(reply_markup)
+        data = {"chat_id": chat_id, "text": text, 'parse_mode': 'HTML', "reply_markup": r_m}
     elif tp == 4:
         text = lst[0] + '\n'
-        data = {"chat_id": chat_id, "text": text}
+        data = {'chat_id': chat_id, 'text': text}
     print(data)
     requests.post(url, data=data)
 
 def get_pr_cat():
-    res = get_db(epg=True).execute(
-        'SELECT DISTINCT cat '
-        ' FROM programme '
-    ).fetchall()
+    res = get_db(epg=True).execute('SELECT DISTINCT cat FROM programme').fetchall()
     cat = []
     for r in res:
         cat.append(r['cat'])
@@ -67,8 +75,22 @@ def get_pr_by_cat(cat, tm):
         pr.append(r['disp_name'])
     return pr
 
-def get_programme(prm, tm):
-    sql = 'SELECT pstart, pstop, title, pdesc FROM programme p JOIN channel c ON p.channel = c.ch_id WHERE disp_name = ? AND pstart < ? AND pstop > ? ORDER BY pstart'
+def update_telebot_db(chat_id, first_name, shift):
+    print(chat_id)
+    db = get_db(telebot=True)
+    sql = 'SELECT first_name, shift FROM telebot WHERE chat_id = ?'
+    res = db.execute(sql, (chat_id,)).fetchone()
+    if res:
+        sql = 'UPDATE telebot SET first_name = ?, shift = ? WHERE chat_id = ?'
+        db.execute(sql, (first_name, shift, chat_id))
+    else:
+        sql = 'INSERT INTO telebot VALUES ( ?, ?, ?)'
+        db.execute(sql, (chat_id, first_name, shift))
+    db.commit()
+
+def get_programme(chat_id, prm, tm):
+    sql = ('SELECT pstart, pstop, title, pdesc FROM programme p JOIN channel c ON p.channel = c.ch_id '
+            'WHERE disp_name = ? AND pstart < ? AND pstop > ? ORDER BY pstart')
     res = get_db(epg=True).execute(sql, (prm, tm, tm)).fetchone()
     pr = []
     if not res: 
@@ -76,10 +98,11 @@ def get_programme(prm, tm):
         pr.append('К сожалению,') 
         pr.append('программа прередач отсутствует.')
         pr.append('************************************')
+        pr.append('************************************')
     else:
-        print(res['pstart'])
         pr.append(prm)
-        pr.append(res['pstart'].strftime("%H:%M") + ' - ' + res['pstop'].strftime("%H:%M") + 'UTC')
+        pr.append(res['pstart'])
+        pr.append(res['pstop'])
         pr.append(res['title'])
         if res['pdesc']: pr.append(res['pdesc'])
         else: pr.append('Содержание отсутствует')
@@ -89,30 +112,54 @@ def get_programme(prm, tm):
 bp = Blueprint('telebot', __name__)
 @bp.route('/telebot', methods=["GET", "POST"])
 def telebot():
-    print("***********************88")
+    print("***********************")
+    tm_zone_list = ['МСК - 1','МСК','МСК + 1','МСК + 2','МСК + 3','МСК + 4']
     if request.method == "POST":
         print(request.json)
         if 'callback_query' in request.json:
-            if request.json['callback_query']["data"][0] == '$':
-                tm = datetime.utcnow()
+            if 'message' in request.json['callback_query']:
                 chat_id = request.json['callback_query']["message"]["chat"]["id"]
+            else: return 'Message too old'
+            tm = datetime.utcnow()
+            if request.json['callback_query']["data"][0] == '$':
                 cat = request.json['callback_query']["data"][1:]
                 lst = get_pr_by_cat(cat, tm)
-                tp = 2
+                tp = 2 
+            elif request.json['callback_query']["data"][0] == '#':
+                first_name = request.json['callback_query']["from"]["first_name"]
+                lst = [f"Здравствуйте, {first_name}"]
+                if 'last_name' in request.json['callback_query']['from']:
+                    lst[0] += f" {request.json['callback_query']['from']['last_name']}. "
+                lst[0] += f"Ваш часовой пояс {request.json['callback_query']['data'][1:]}."
+                tm_zone_shift = ({ tm_zone_list[0]: 120, tm_zone_list[1]: 180, tm_zone_list[2]: 240, 
+                             tm_zone_list[3]: 300, tm_zone_list[4]: 360, tm_zone_list[5]: 420})
+                shift = tm_zone_shift[request.json['callback_query']["data"][1:]]
+                update_telebot_db(chat_id, first_name, shift)
+                tp = 4
+            elif request.json['callback_query']["data"][0] == '<' or request.json['callback_query']["data"][0] == '>':
+                p = request.json['callback_query']["data"].find(';')
+                prm = request.json['callback_query']["data"][1:p]
+                stm = request.json['callback_query']["data"][p+1:]
+                tm = datetime(int(stm[:4]),int(stm[5:7]),int(stm[8:10]),int(stm[11:13]),int(stm[14:16]),int(stm[17:19]))
+                if request.json['callback_query']["data"][0] == '<': tm -= timedelta(minutes=1)
+                else: tm += timedelta(minutes=1)
+                lst = get_programme(chat_id, prm, tm)
+                tp = 3
             else:
-                tm = datetime.utcnow()
-                chat_id = request.json['callback_query']["message"]["chat"]["id"]
                 prm = request.json['callback_query']["data"]
-                lst = get_programme(prm, tm)
+                lst = get_programme(chat_id, prm, tm)
                 tp = 3
         elif request.json["message"]["text"] == '/start':
             chat_id = request.json["message"]["chat"]["id"]
             lst = get_pr_cat()
             tp = 1
+        elif request.json["message"]["text"] == '/location':
+            chat_id = request.json["message"]["chat"]["id"]
+            lst = tm_zone_list
+            tp = 5
         else:
             chat_id = request.json["message"]["chat"]["id"]
-            lst = []
-            lst.append('Наберите /start.')
+            lst = ['Наберите /start.']
             tp = 4
         send_message(chat_id, lst, tp)
 
