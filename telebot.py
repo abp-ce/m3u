@@ -28,9 +28,14 @@ def send_message(chat_id, lst, tp):
                 l1.clear()
             if l == None: s = 'Пусто'
             else: s = l
+            if tp == 2: 
+                sql = 'SELECT disp_name FROM channel WHERE ch_id = ?'
+                res = get_db(epg=True).execute(sql, (s,)).fetchone()
+                s = res['disp_name']
             text += f"{i}. {s}.\n"
-            if tp == 1: s = '$' + s
-            if tp == 5: s = '#' + s
+            if tp == 1: s = '$' + s  # category
+            if tp == 5: s = '#' + s  # location
+            if tp == 2: s = l
             l0.append({'text': str(i), 'callback_data': s})
             i += 1
         l1.append(l0)
@@ -38,13 +43,18 @@ def send_message(chat_id, lst, tp):
         r_m = json.dumps(reply_markup)
         data = {"chat_id": chat_id, "text": text, "reply_markup": r_m}
     elif tp == 3:
-        sql = 'SELECT shift FROM telebot WHERE chat_id = ?'
+        if type(chat_id) is int: tbl = 'telebot'
+        else: tbl = 'telebot_s'
+        sql = f'SELECT shift FROM {tbl} WHERE chat_id = ?'
         res = get_db(telebot=True).execute(sql, (chat_id,)).fetchone()
         if res: period = ((lst[1] + timedelta(minutes=res['shift'])).strftime("%H:%M") + ' - ' + 
                 (lst[2] + timedelta(minutes=res['shift'])).strftime("%H:%M"))
         else: period = lst[1].strftime("%H:%M") + ' - ' + lst[2].strftime("%H:%M") + 'UTC'
 
-        text = '<b>' + lst[0] + '\n</b>' + '<i>' + period + '\n</i>' + '<b><i>' + lst[3] + '\n</i></b>' + lst[4] + '\n'
+        sql = 'SELECT disp_name FROM channel WHERE ch_id = ?'
+        rs = get_db(epg=True).execute(sql, (lst[0],)).fetchone()
+
+        text = '<b>' + rs['disp_name'] + '\n</b>' + '<i>' + period + '\n</i>' + '<b><i>' + lst[3] + '\n</i></b>' + lst[4] + '\n'
         reply_markup = ({'inline_keyboard': [[{'text': '<<', 'callback_data': f"<{lst[0]};{lst[1]}"}, 
                                               {'text': '==', 'callback_data': lst[0]}, 
                                               {'text': '>>', 'callback_data': f">{lst[0]};{lst[2]}"}]]})
@@ -63,8 +73,17 @@ def get_pr_cat():
         cat.append(r['cat'])
     return cat
 
+def get_pr_by_letters(str):
+    sql = 'SELECT ch_id FROM channel WHERE disp_name_l LIKE ? '
+    ptrn = f'%{str.lower()}%'
+    res = get_db(epg=True).execute(sql, (ptrn,)).fetchall()
+    pr = []
+    for r in res:
+        pr.append(r['ch_id'])
+    return pr
+
 def get_pr_by_cat(cat, tm):
-    sql = 'SELECT disp_name FROM channel c JOIN programme p ON p.channel = c.ch_id WHERE pstart < ? AND pstop > ? AND '
+    sql = 'SELECT channel FROM programme WHERE pstart < ? AND pstop > ? AND '
     if cat == 'Пусто': res = get_db(epg=True).execute((sql + 'cat IS NULL'), (tm, tm)).fetchall()
     else: res = get_db(epg=True).execute((sql + 'cat = ?'), (tm, tm, cat)).fetchall()
 
@@ -72,25 +91,26 @@ def get_pr_by_cat(cat, tm):
 
     pr = []
     for r in res:
-        pr.append(r['disp_name'])
+        pr.append(r['channel'])
     return pr
 
 def update_telebot_db(chat_id, first_name, shift):
-    print(chat_id)
+    if type(chat_id) is int: tbl = 'telebot'
+    else: tbl = 'telebot_s'
     db = get_db(telebot=True)
-    sql = 'SELECT first_name, shift FROM telebot WHERE chat_id = ?'
+    sql = f'SELECT first_name, shift FROM {tbl} WHERE chat_id = ?'
     res = db.execute(sql, (chat_id,)).fetchone()
     if res:
-        sql = 'UPDATE telebot SET first_name = ?, shift = ? WHERE chat_id = ?'
+        sql = f'UPDATE {tbl} SET first_name = ?, shift = ? WHERE chat_id = ?'
         db.execute(sql, (first_name, shift, chat_id))
     else:
-        sql = 'INSERT INTO telebot VALUES ( ?, ?, ?)'
+        sql = f'INSERT INTO {tbl} VALUES ( ?, ?, ?)'
         db.execute(sql, (chat_id, first_name, shift))
     db.commit()
 
 def get_programme(chat_id, prm, tm):
-    sql = ('SELECT pstart, pstop, title, pdesc FROM programme p JOIN channel c ON p.channel = c.ch_id '
-            'WHERE disp_name = ? AND pstart < ? AND pstop > ? ORDER BY pstart')
+    sql = ('SELECT pstart, pstop, title, pdesc FROM programme '
+            'WHERE channel = ? AND pstart < ? AND pstop > ? ')
     res = get_db(epg=True).execute(sql, (prm, tm, tm)).fetchone()
     pr = []
     if not res: 
@@ -149,18 +169,22 @@ def telebot():
                 prm = request.json['callback_query']["data"]
                 lst = get_programme(chat_id, prm, tm)
                 tp = 3
-        elif request.json["message"]["text"] == '/start':
+        elif request.json["message"]["text"] == '/category':
             chat_id = request.json["message"]["chat"]["id"]
             lst = get_pr_cat()
             tp = 1
-        elif request.json["message"]["text"] == '/location':
+        elif request.json["message"]["text"] == '/timezone':
             chat_id = request.json["message"]["chat"]["id"]
             lst = tm_zone_list
             tp = 5
+        elif request.json["message"]["text"] == '/search':
+            chat_id = request.json["message"]["chat"]["id"]
+            lst = ['Наберите название канала.']
+            tp = 4
         else:
             chat_id = request.json["message"]["chat"]["id"]
-            lst = ['Наберите /start.']
-            tp = 4
+            lst = get_pr_by_letters(request.json["message"]["text"])
+            tp = 2
         send_message(chat_id, lst, tp)
 
     return "OK"
