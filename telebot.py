@@ -53,7 +53,6 @@ def send_message(chat_id, lst, tp):
 
         sql = 'SELECT disp_name FROM channel WHERE ch_id = ?'
         rs = get_db(epg=True).execute(sql, (lst[0],)).fetchone()
-
         text = '<b>' + rs['disp_name'] + '\n</b>' + '<i>' + period + '\n</i>' + '<b><i>' + lst[3] + '\n</i></b>' + lst[4] + '\n'
         reply_markup = ({'inline_keyboard': [[{'text': '<<', 'callback_data': f"<{lst[0]};{lst[1]}"}, 
                                               {'text': '==', 'callback_data': lst[0]}, 
@@ -61,7 +60,9 @@ def send_message(chat_id, lst, tp):
         r_m = json.dumps(reply_markup)
         data = {"chat_id": chat_id, "text": text, 'parse_mode': 'HTML', "reply_markup": r_m}
     elif tp == 4:
-        text = lst[0] + '\n'
+        text = ''
+        for l in lst:
+            text += l + '\n'
         data = {'chat_id': chat_id, 'text': text}
     print(data)
     requests.post(url, data=data)
@@ -116,8 +117,8 @@ def get_programme(chat_id, prm, tm):
     if not res: 
         pr.append('************************************')
         pr.append('К сожалению,') 
-        pr.append('программа прередач отсутствует.')
         pr.append('************************************')
+        pr.append('программа прередач отсутствует.')
         pr.append('************************************')
     else:
         pr.append(prm)
@@ -164,11 +165,13 @@ def telebot():
                 if request.json['callback_query']["data"][0] == '<': tm -= timedelta(minutes=1)
                 else: tm += timedelta(minutes=1)
                 lst = get_programme(chat_id, prm, tm)
-                tp = 3
+                if lst[0] == '************************************': tp = 4
+                else: tp = 3
             else:
                 prm = request.json['callback_query']["data"]
                 lst = get_programme(chat_id, prm, tm)
-                tp = 3
+                if lst[0] == '************************************': tp = 4
+                else: tp = 3
         elif request.json["message"]["text"] == '/category':
             chat_id = request.json["message"]["chat"]["id"]
             lst = get_pr_cat()
