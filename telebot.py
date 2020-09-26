@@ -184,6 +184,12 @@ def telebot():
             chat_id = request.json["message"]["chat"]["id"]
             lst = ['Наберите название канала.']
             tp = 4
+        elif request.json["message"]["text"] == '/start':
+            chat_id = request.json["message"]["chat"]["id"]
+            lst = (['Доступные команды.','/category - Выберите категорию передач',
+                    '/timezone - Выберите вашу временную зону, чтобы бот правильно показывал время передач',
+                    '/search - Поиск канала по буквам'])
+            tp = 4
         else:
             chat_id = request.json["message"]["chat"]["id"]
             lst = get_pr_by_letters(request.json["message"]["text"])
