@@ -8,33 +8,19 @@ import xml.etree.ElementTree as ET
 
 
 def get_db(epg=False, telebot=False):
-    if epg:
-        if 'epg_db' not in g:
-            g.epg_db = sqlite3.connect(
-                current_app.config['EPG_DATABASE'],
-                detect_types=sqlite3.PARSE_DECLTYPES
-            )
-            g.epg_db.row_factory = sqlite3.Row
-
-        return g.epg_db
-    if telebot:
-        if 'telebot_db' not in g:
-            g.telebot_db = sqlite3.connect(
-                current_app.config['TELEBOT_DATABASE'],
-                detect_types=sqlite3.PARSE_DECLTYPES
-            )
-            g.telebot_db.row_factory = sqlite3.Row
-
-        return g.telebot_db
-
-    if 'db' not in g:
-        g.db = sqlite3.connect(
-            current_app.config['DATABASE'],
+    db_dict = {'epg_db' : 'EPG_DATABASE', 'telebot_db' : 'TELEBOT_DATABASE', 'db' : 'DATABASE'}
+    if epg: fl = 'epg_db'
+    elif telebot: fl = 'telebot_db'
+    else: fl = 'db'
+    if fl not in g:
+        db = sqlite3.connect(
+            current_app.config[db_dict[fl]],
             detect_types=sqlite3.PARSE_DECLTYPES
         )
-        g.db.row_factory = sqlite3.Row
-
-    return g.db
+        db.row_factory = sqlite3.Row
+        setattr(g, fl, db)
+    return g.get(fl, None)
+    
 
 def close_epg_db(e=None):
     db = g.pop('epg_db', None)
@@ -119,6 +105,7 @@ def pop_epg_db_command():
             #db.commit()
             elem.clear()
     db.commit()
+    click.echo('Populated the epg database.')
 
 @click.command('init-epg-db')
 @with_appcontext

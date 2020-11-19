@@ -20,16 +20,13 @@ def get_m3u(id = None) :
     if not id :
         g.m3u = M3Uclass.M3U(empty=True)
         g.resm3u = M3Uclass.M3U(empty=True)
-        return g.m3u, g.resm3u
+        return
     if 'm3u' not in g :
         g.m3u = M3Uclass.M3U(empty=True)
-    
-    post = get_db().execute(
-        'SELECT list '
-        ' FROM m3u '
-        ' WHERE author_id = ?',
-        (id,)
-    ).fetchone()
+    if 'resm3u' in g : 
+        return
+    db = get_db()
+    post = db.execute('SELECT list FROM m3u WHERE author_id = ?',(id,)).fetchone()
 
     if post : 
         f_name = post['list']
@@ -39,18 +36,10 @@ def get_m3u(id = None) :
             g.resm3u = M3Uclass.M3U(lines)
         else : g.resm3u = M3Uclass.M3U(empty=True)
     else : 
-        db = get_db()
-        db.execute(
-            'INSERT INTO m3u (title, list, author_id)'
-            ' VALUES (?, ?, ?)',
-            ("Your list", "", g.user['id'])
-        )
+        db.execute('INSERT INTO m3u (title, list, author_id) VALUES (?, ?, ?)',("Your list", "", g.user['id']))
         db.commit()
         g.resm3u = M3Uclass.M3U(empty=True)
     
-    return g.m3u, g.resm3u
-
-        
 
 def del_m3u(e=None):
     m3u = g.pop('m3u', None)
@@ -67,38 +56,29 @@ def help():
 @bp.route('/', methods=('GET', 'POST'))
 def m3u():
     if g.user :
-        m3u, resm3u = get_m3u(g.user['id'])
+        get_m3u(g.user['id'])
     else :
-        m3u, resm3u = get_m3u()
+        get_m3u()
     if request.method == 'POST':
         if request.form['btn'] == (_('Load')) :
             url = request.form["url"]
             with urllib.request.urlopen(url) as f:
                 lines = f.readlines()
-            m3u = M3Uclass.M3U(lines)
+            g.m3u = M3Uclass.M3U(lines)
             #resm3u = M3Uclass.M3U(lines,True)
-    return render_template('m3u.html', m3u=m3u, resm3u=resm3u)
+    return render_template('m3u.html', m3u=g.m3u, resm3u=g.resm3u)
 
 @bp.route('/m3u/save', methods=['POST'])
 @login_required
 def m3u_save():
     db = get_db()
-    post = db.execute(
-        'SELECT list '
-        ' FROM m3u '
-        ' WHERE author_id = ?',
-        (g.user['id'],)
-    ).fetchone()
+    post = db.execute('SELECT list FROM m3u WHERE author_id = ?',(g.user['id'],)).fetchone()
     if post :
         if post['list'] == "" :
             rnd = ''.join(random.choice(string.ascii_letters) for i in range(5))
             f_n = str(g.user['id']) + rnd + "_playlist.m3u8"
             f_name = current_app.instance_path + "/u_fls/" + f_n
-            db.execute(
-                'UPDATE m3u SET title = ?, list = ?'
-                ' WHERE id = ?',
-                ("You m3u", f_name, g.user['id'])
-            )
+            db.execute('UPDATE m3u SET title = ?, list = ? WHERE id = ?',("You m3u", f_name, g.user['id']))
             db.commit()
         else : 
             f_name = post['list']
@@ -155,12 +135,7 @@ def m3u_select():
 #@login_required
 def m3u_download(filename):
     id = filename[:filename.find('_')]
-    post = get_db().execute(
-        'SELECT list '
-        ' FROM m3u '
-        ' WHERE author_id = ?',
-        (id,)
-    ).fetchone()
+    post = get_db().execute('SELECT list FROM m3u WHERE author_id = ?',(id,)).fetchone()
     if os.path.exists(post['list']) :
         pos = post['list'].rfind('/')
         fp = post['list'][:pos]
