@@ -42,7 +42,7 @@ def init_db(fn):
     else: db = get_db()
     if 'secret' in fn :
         with current_app.open_instance_resource(fn) as f:
-           db.executescript(f.read().decode('utf8'))
+            db.executescript(f.read().decode('utf8'))
     else :
         with current_app.open_resource(fn) as f:
             db.executescript(f.read().decode('utf8'))

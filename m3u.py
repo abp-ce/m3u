@@ -55,10 +55,7 @@ def help():
 
 @bp.route('/', methods=('GET', 'POST'))
 def m3u():
-    if g.user :
-        get_m3u(g.user['id'])
-    else :
-        get_m3u()
+    get_m3u(g.user['id']) if g.user else get_m3u()
     if request.method == 'POST':
         if request.form['btn'] == (_('Load')) :
             url = request.form["url"]
@@ -94,38 +91,49 @@ def m3u_save():
     f.close()
     return f_n
 
+def subs_name(pr_name):
+    name = pr_name.rstrip().rstrip(')')
+    pr_subs = ({ 'fhd': 'hd', 'россия-1': 'россия 1', 'твц': 'тв центр', '5 канал': 'пятый канал',
+              'рен тв hd': 'рен тв', 'мир hd': 'мир', 'телеканал звезда': 'звезда', 'тв3 hd': 'тв-3',
+              'тв3': 'тв-3', 'пятница! hd': 'пятница', 'пятница!': 'пятница' })
+    for key in pr_subs:
+        if key in name : 
+            name = name.replace(key,pr_subs[key])
+            break
+    print(name)
+    #pos = nm.find('hd')
+    #if (pos > 0) :
+    #    nm = nm[:pos].rstrip()
+    shift = 0
+    if '+' in name : 
+        pos = name.find('+')
+        shift = int(name[pos:])
+        name = name[:pos].rstrip('(').rstrip()
+    elif (' -' or '(-') in name : 
+        pos = name.find('-')
+        shift = int(name[pos:])
+        name = name[:pos].rstrip('(').rstrip()
+    return name, shift
+
+
 @bp.route('/m3u/select', methods=['POST'])
 def m3u_select():
     data = request.get_json()
+    nm, shft = subs_name(data['name'].lower())
     st = data['date']
-    nm = data['name'].lower().rstrip().rstrip(')')
-    pos = nm.find('hd')
-    if (pos > 0) :
-        nm = nm[:pos].rstrip()
-    shft = 0
-    if '+' in nm : 
-        pos = nm.find('+')
-        shft = int(nm[pos:])
-        nm = nm[:pos].rstrip('(').rstrip()
-    elif '-' in nm : 
-        pos = nm.find('-')
-        shft = int(nm[pos:])
-        nm = nm[:pos].rstrip('(').rstrip()
-    print(nm)
     date = datetime(int(st[:4]), int(st[5:7]), int(st[8:10]), int(st[11:13]) + shft, int(st[14:16]), int(st[17:19]))
     res = get_db(epg=True).execute(
         'SELECT pstart, pstop, title, pdesc '
         ' FROM programme p JOIN channel c ON p.channel = c.ch_id '
         ' WHERE disp_name_l = ? AND pstart < ? AND pstop > ? ORDER BY pstart',
         (nm,date,date)
-    ).fetchall()
+    ).fetchone()
     jsn = {}
     if res:
-        for r in res:
-            jsn['start'] = (r['pstart'] - timedelta(hours=shft)).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-            jsn['stop'] = (r['pstop'] - timedelta(hours=shft)).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-            jsn['title'] = r['title']
-            jsn['desc'] = r['pdesc']
+        jsn['start'] = (res['pstart'] - timedelta(hours=shft)).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        jsn['stop'] = (res['pstop'] - timedelta(hours=shft)).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        jsn['title'] = res['title']
+        jsn['desc'] = res['pdesc']
     else: 
         jsn['start'] = jsn['stop'] = jsn['title'] = jsn['desc'] =''
     return json.dumps(jsn)

@@ -78,6 +78,7 @@ function movec() {
       body: jss
     }).then(function(response) {
       response.json().then(function(rsp) {
+        //alert(rsp["start"])
         if (rsp["start"] === "") tm.innerHTML = prev.innerHTML = now.innerHTML = next.innerHTML = "";
         else {
           let start = new Date(rsp["start"]);

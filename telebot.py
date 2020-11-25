@@ -64,23 +64,18 @@ def send_message(chat_id, lst, tp):
         for l in lst:
             text += l + '\n'
         data = {'chat_id': chat_id, 'text': text}
-    print(data)
     requests.post(url, data=data)
 
 def get_pr_cat():
     res = get_db(epg=True).execute('SELECT DISTINCT cat FROM programme').fetchall()
-    cat = []
-    for r in res:
-        cat.append(r['cat'])
+    cat = [r['cat'] for r in res]
     return cat
 
 def get_pr_by_letters(str):
     sql = 'SELECT ch_id FROM channel WHERE disp_name_l LIKE ? '
     ptrn = f'%{str.lower()}%'
     res = get_db(epg=True).execute(sql, (ptrn,)).fetchall()
-    pr = []
-    for r in res:
-        pr.append(r['ch_id'])
+    pr = [r['ch_id'] for r in res]
     return pr
 
 def get_pr_by_cat(cat, tm):
@@ -90,9 +85,7 @@ def get_pr_by_cat(cat, tm):
 
     if not res: print('Nothing')  
 
-    pr = []
-    for r in res:
-        pr.append(r['channel'])
+    pr = [r['channel'] for r in res]
     return pr
 
 def update_telebot_db(chat_id, first_name, shift):
@@ -133,10 +126,8 @@ def get_programme(chat_id, prm, tm):
 bp = Blueprint('telebot', __name__)
 @bp.route('/telebot', methods=["GET", "POST"])
 def telebot():
-    print("***********************")
     tm_zone_list = ['МСК - 1','МСК','МСК + 1','МСК + 2','МСК + 3','МСК + 4']
     if request.method == "POST":
-        print(request.json)
         if 'callback_query' in request.json:
             if 'message' in request.json['callback_query']:
                 chat_id = request.json['callback_query']["message"]["chat"]["id"]
