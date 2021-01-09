@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-24 13:01+0500\n"
+"POT-Creation-Date: 2021-01-09 19:24+0500\n"
 "PO-Revision-Date: 2020-06-08 20:21+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -43,11 +43,11 @@ msgstr "Неверный пароль."
 msgid "Your registred. Please log in."
 msgstr "Вы зарегистрировались. Пожалуйста, войдите."
 
-#: m3u/m3u.py:74 m3u/templates/m3u.html:20
+#: m3u/m3u.py:60 m3u/templates/m3u.html:49
 msgid "Load"
 msgstr "Загрузить"
 
-#: m3u/m3u.py:154
+#: m3u/m3u.py:153
 msgid "File must be saved"
 msgstr "Файл должен быть сохранен"
 
@@ -59,25 +59,25 @@ msgstr "M3U редактор"
 msgid "IPTV M3U playlist editor"
 msgstr "IPTV M3U плейлист редактор"
 
-#: m3u/templates/base.html:11
+#: m3u/templates/base.html:12
 msgid "M3U editor"
 msgstr "M3U редактор"
 
-#: m3u/templates/base.html:15
+#: m3u/templates/base.html:16
 msgid "Log Out"
 msgstr "Выйти"
 
-#: m3u/templates/auth/login.html:24 m3u/templates/auth/register.html:6
-#: m3u/templates/auth/register.html:15 m3u/templates/base.html:17
+#: m3u/templates/auth/login.html:27 m3u/templates/auth/register.html:6
+#: m3u/templates/auth/register.html:15 m3u/templates/base.html:18
 msgid "Register"
 msgstr "Зарегистрироваться"
 
 #: m3u/templates/auth/login.html:6 m3u/templates/auth/login.html:15
-#: m3u/templates/auth/register.html:24 m3u/templates/base.html:19
+#: m3u/templates/auth/register.html:24 m3u/templates/base.html:20
 msgid "Log In"
 msgstr "Войти"
 
-#: m3u/templates/base.html:24 m3u/templates/help.html:4
+#: m3u/templates/base.html:25 m3u/templates/help.html:4
 msgid "Help"
 msgstr "Помощь"
 
@@ -113,94 +113,94 @@ msgstr "В командном файле"
 msgid "you need to enter the path to your video player in the line"
 msgstr "нужно прописать путь к Вашему видео-плееру в строке"
 
-#: m3u/templates/help.html:17 m3u/templates/m3u.html:58
+#: m3u/templates/help.html:17
 msgid "Download"
 msgstr "Скачать"
 
-#: m3u/templates/auth/login.html:25 m3u/templates/auth/register.html:25
+#: m3u/templates/auth/login.html:28 m3u/templates/auth/register.html:25
 #: m3u/templates/help.html:18
 msgid "Home"
 msgstr "На главную"
 
-#: m3u/templates/m3u.html:18
-msgid "Playlist address"
-msgstr "Адрес плейлиста"
-
-#: m3u/templates/m3u.html:25
-msgid "Source list"
-msgstr "Лист-источник"
-
-#: m3u/templates/m3u.html:27 m3u/templates/m3u.html:47
+#: m3u/templates/m3u.html:20
 msgid "Choose channels"
 msgstr "Выберите каналы"
 
-#: m3u/templates/m3u.html:35
-msgid "Move"
-msgstr "Перенести"
+#: m3u/templates/m3u.html:47
+msgid "Playlist address"
+msgstr "Адрес плейлиста"
 
-#: m3u/templates/m3u.html:36
-msgid "Unselect"
-msgstr "Снять выделение"
-
-#: m3u/templates/m3u.html:36
-msgid "<- Unselect ->"
-msgstr "<- X выбор ->"
-
-#: m3u/templates/m3u.html:41 m3u/templates/m3u.html:43
-msgid "Your list"
-msgstr "Ваш лист"
-
-#: m3u/templates/m3u.html:54
-msgid "Up"
-msgstr "Вверх"
-
-#: m3u/templates/m3u.html:55
-msgid "Down"
-msgstr "Вниз"
-
-#: m3u/templates/m3u.html:56
-msgid "Delete"
-msgstr "Удалить"
-
-#: m3u/templates/m3u.html:57
-msgid "Save"
-msgstr "Сохранить"
-
-#: m3u/templates/m3u.html:66
+#: m3u/templates/m3u.html:72
 msgid "See Help"
 msgstr "Смотри Помощь"
 
-#: m3u/templates/m3u.html:66 m3u/templates/m3u.html:70
+#: m3u/templates/m3u.html:72
 msgid "Play in an external player"
 msgstr "Использовать внешний плеер"
 
-#: m3u/templates/m3u.html:76
-msgid "Choose channel for play"
-msgstr "Выберите канал для просмотра"
-
-#: m3u/templates/m3u.html:78
-msgid "Previos programme"
-msgstr "Предыдущая программа"
-
-#: m3u/templates/m3u.html:79
-msgid "Current programme"
-msgstr "Текущая программа"
-
-#: m3u/templates/m3u.html:80
-msgid "Next programme"
-msgstr "Следующая программа"
-
-#: m3u/templates/m3u.html:95
+#: m3u/templates/m3u.html:88
 msgid "Andrei Polyakov"
 msgstr "Андрей Поляков"
 
-#: m3u/templates/m3u.html:96
+#: m3u/templates/m3u.html:89
 msgid "mailto:ap120368+web@gmail.com"
 msgstr "mailto:abp52-mail@mail.ru"
 
-#: m3u/templates/m3u.html:96
+#: m3u/templates/m3u.html:89
 msgid "ap120368+web@gmail.com"
 msgstr "abp52-mail@mail.ru"
+
+#: m3u/templates/m3u_script.html:3
+msgid "Choose channel for play"
+msgstr "Выберите канал для просмотра"
+
+#: m3u/templates/m3u_script.html:8
+msgid "Source list"
+msgstr "Лист-источник"
+
+#: m3u/templates/m3u_script.html:15
+msgid "Move"
+msgstr "Перенести"
+
+#: m3u/templates/m3u_script.html:19
+msgid "Unselect"
+msgstr "Снять выделение"
+
+#: m3u/templates/m3u_script.html:20
+msgid "<- Unselect ->"
+msgstr "<- X выбор ->"
+
+#: m3u/templates/m3u_script.html:24 m3u/templates/m3u_script.html:26
+msgid "Your list"
+msgstr "Ваш лист"
+
+#: m3u/templates/m3u_script.html:35
+msgid "Up"
+msgstr "Вверх"
+
+#: m3u/templates/m3u_script.html:39
+msgid "Down"
+msgstr "Вниз"
+
+#: m3u/templates/m3u_script.html:43
+msgid "Delete"
+msgstr "Удалить"
+
+#: m3u/templates/m3u_script.html:47
+msgid "Save"
+msgstr "Сохранить"
+
+#: m3u/templates/m3u_script.html:54
+msgid "Previos programme"
+msgstr "Предыдущая программа"
+
+#: m3u/templates/m3u_script.html:59
+msgid "Current programme"
+msgstr "Текущая программа"
+
+#: m3u/templates/m3u_script.html:64
+msgid "Next programme"
+msgstr "Следующая программа"
 
 #: m3u/templates/auth/login.html:11 m3u/templates/auth/register.html:11
 msgid "Username"

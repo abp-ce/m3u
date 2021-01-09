@@ -12,6 +12,35 @@
 {% endblock %}
 
 {% block content %}
+
+  <template id="m3u-select">
+    <div>
+      <label style="white-space: nowrap;" :for="id" v-html="lbl"></label>
+      <p><select :id="id" @change="onSelList" multiple size="10">
+        <option disabled>{{ _('Choose channels') }}</option> 
+        <option v-for="option in progs" :value="option.value">${ option.title }</option> 
+      </select></p>
+    </div>
+  </template>
+
+  <template id="m3u-buttons">
+    <div>
+      <p v-for="(btn, ind) in buttons" style="margin-bottom: -20px;"><input name="btn" type="button" @click="$emit('btn-clk',ind)" :title="btn.title" :value="btn.value"></p>
+    </div>
+  </template>
+
+  <template id="m3u-prg">
+    <div>
+      <p style="margin: 2px; padding: 2px;"><a id="ref" :href="selected.value">${ selected.title }</a></p>
+      <p id="tm" style="font-size: x-small; margin: 0px; padding: 0px;">${ prg.tm }</p>
+      <div id="spans" style="display: none;">
+        <span v-for="(spn, ind) in spans" :id="spn.id" :title="spn.title" @click="span_click(ind)" class="arrow">${ spn.text }</span>
+      </div>
+      <p id="ttl" style="font-size: small; margin: 0px; padding: 0px;">${ prg.title }</p>
+      <p id="desc" style="font-size: x-small; margin: 0px; padding: 0px;">${ prg.desc }</p>
+    </div>
+  </template>
+
   <form method="post">
     <div style="clear: both">
       <p>
@@ -20,82 +49,47 @@
         <input name="btn" type="submit" value="{{ _('Load') }}">
       </p>
     </div>
-    <div style="display: inline-flex;flex-wrap: nowrap;">
-      <div style="float: left; padding: 3px">
-        <label style="white-space: nowrap;" for="Sel">{{ _('Source list') }}</label>
-        <p><select id="Sel" onchange="onchangec(this)" multiple size="10">
-        <option disabled>{{ _('Choose channels') }}</option>
-        {% for line in m3u.extinf %}
-          <option value="{{ line.stream }}">{{ line.getName() }}</option>
-        {% endfor %}
-        </select></p>
+    {% include 'm3u_script.html' %}
+    <div id="m3u">
+      <div style="display: inline-flex; flex-wrap: nowrap;">
+        <div style="float: left; padding: 3px">
+          <m3u-sel v-model="s_selected" :progs="s_progs" :id = "s_id" :lbl = "s_lbl"></m3u-sel>
+        </div>
+        <div style="float: left; padding-top: 23px">
+          <m3u-buttons :buttons="s_buttons" @btn-clk="s_button_click"></m3u-buttons>
+        </div>
+        <div style="float: left; padding: 3px">
+          <m3u-sel v-model="d_selected" :progs="d_progs" :id = "d_id" :lbl = "d_lbl"></m3u-sel>
+        </div>
+        <div style="float: left; padding-top: 23px">
+          <m3u-buttons :buttons="d_buttons" @btn-clk="d_button_click"></m3u-buttons>
+        </div>
       </div>
-      <div style="float: left; padding-top: 23px">
-        <!--p><input name="btn" type="button" onclick="playc()" value="Play"></p-->
-        <p><input name="btn" type="button" onclick="movec()" title="{{ _('Move') }}" value="-->"></p>
-        <p><input name="btn" type="button" onclick="unselectc()" title="{{ _('Unselect') }}" value="{{ _('<- Unselect ->') }}"></p>
+      <div id="prg" style="width: 700px;">
+        <m3u-prg :spans="spans" :selected="selected"></m3u-prg>
       </div>
-      <div style="float: left; padding: 3px">
-        <label for="RSel">
-          {% if g.user %}
-            <a id="pllst" href="/m3u/download/{{g.user['id']}}_playlist.m3u8">{{ _('Your list') }}</a>
-          {% else %}
-            {{ _('Your list') }}
-          {% endif %}
-        </label>
-        <p><select name="RSel" id="RSel" onchange="onchangec(this)" multiple size="10">
-        <option disabled>{{ _('Choose channels') }}</option>
-        {% for line in resm3u.extinf %}
-          <option value="{{ line.stream }}">{{ line.getName() }}</option>
-        {% endfor %}
-        </select></p>
-      </div>
-      <div style="float: left; padding-top: 23px">
-        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="upc()" value="{{ _('Up') }}"></p>
-        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="downc()" value="{{ _('Down') }}"></p>
-        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="deletec()" value="{{ _('Delete') }}"></p>
-        <p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="savec()" value="{{ _('Save') }}"></p>
-        <!--p style="margin-bottom: -20px;"><input name="btn" type="button" onclick="window.location.href='/m3u/download';" value="{{ _('Download') }}"></p-->
-        <!--p><a id="f_ref" href="/m3u/download" download>Download file</a></p-->
+      <div id="dsk">
+        <label id="lext" title="{{ _('See Help') }}" style="font-size: small;" for='ext'>{{ _('Play in an external player') }}</label>
+        <input type="checkbox" id="ext" name="ext" v-model="chk"><br>
+        <!--input type="checkbox" id="ext" name="ext" onclick="ext_player()"><br-->
+        <video id="video" type="video/mp4" poster="//vjs.zencdn.net/v/oceans.png" preload="metadata" controls width="400"></video>
       </div>
     </div>
-    <!--div class="hidemob"-->
-    <div id="dsk" >
-      <script>
-        if (isMobile() == false) {
-          dsk.innerHTML = "<label title='{{ _('See Help') }}'' style='font-size: small;' for='ext'>{{ _('Play in an external player') }}</label>" + 
-            "<input type='checkbox' id='ext' name='ext' onclick='ext_player()'>"
-        }
-      </script>
-      <!--label for="ext">{{ _('Play in an external player') }}</label>
-      <input type="checkbox" id="ext" name="ext" onclick="ext_player()" checked-->
-    </div>
-    </form>
-    <div id="prg" style="width: 700px;">
-      <!--p><span id="ref">refrence</span></p-->
-      <p style="margin: 2px; padding: 2px;"><a id="ref" href="">{{ _('Choose channel for play') }}</a></p>
-      <p id="tm" style="font-size: x-small; margin: 0px; padding: 0px;"></p>
-      <span id="prev" title="{{ _('Previos programme') }}" onclick="prevc()" class="arrow"></span>
-      <span id="now" title="{{ _('Current programme') }}" onclick="nowc()" class="arrow"></span>
-      <span id="next" title="{{ _('Next programme') }}" onclick="nextc()" class="arrow"></span>
-      <p id="ttl" style="font-size: small; margin: 0px; padding: 0px;"></p>
-      <script> 
-        if (isMobile() == false) {
-          prg.insertAdjacentHTML('beforeend',
-            '<video id="video" type="video/mp4" poster="//vjs.zencdn.net/v/oceans.png" preload="metadata" hidden controls width="400"></video>');
-          if (ext.checked == false) video.hidden = false;
-        } 
-      </script>
-      <p id="desc" style="font-size: x-small; margin: 0px; padding: 0px;"></p>
-      <!--video class="hidemob" id="video" type="video/mp4" poster="//vjs.zencdn.net/v/oceans.png" preload="auto" controls width="400"></video-->
-      <!--object type="application/x-vlc-plugin" width="640" height="480" id="video" target="https://tvchannelstream1.tvzvezda.ru/cdn/tvzvezda/playlist_hdhigh.m3u8"></object-->
-
-    </div>
-    <footer style="font-size: x-small; text-align: right;">
-      <p style="margin-bottom: -8px;">&copy {{ _('Andrei Polyakov') }} 2020</p>
-      <p style="margin-bottom: -8px;"><a href="{{ _('mailto:ap120368+web@gmail.com') }}">{{ _('ap120368+web@gmail.com') }}</a></p>
-    </footer>
-        
-  {% endblock %}
+  </form>
+  <script>
+    if ( isMobile() ) {
+      lext.style.display = 'none';
+      ext.style.display = 'none';
+      video.hidden = true;
+    }
+    //else if (ext.checked == false) video.hidden = false;
+  </script>
+  <footer style="font-size: x-small; text-align: right;">
+    <p style="margin-bottom: -8px;">&copy {{ _('Andrei Polyakov') }} 2020</p>
+    <p style="margin-bottom: -8px;"><a href="{{ _('mailto:ap120368+web@gmail.com') }}">{{ _('ap120368+web@gmail.com') }}</a></p>
+  </footer>
+  <script src="https://unpkg.com/vue-async-computed"></script>
+  <script src="{{ url_for('static', filename='m3u_vue.js') }}"></script>    
+{% endblock %}
 
 

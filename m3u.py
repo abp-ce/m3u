@@ -121,7 +121,7 @@ def m3u_select():
     data = request.get_json()
     nm, shft = subs_name(data['name'].lower())
     st = data['date']
-    date = datetime(int(st[:4]), int(st[5:7]), int(st[8:10]), int(st[11:13]) + shft, int(st[14:16]), int(st[17:19]))
+    date = datetime(int(st[:4]), int(st[5:7]), int(st[8:10]), int(st[11:13]), int(st[14:16]), int(st[17:19])) + timedelta(hours=shft)
     res = get_db(epg=True).execute(
         'SELECT pstart, pstop, title, pdesc '
         ' FROM programme p JOIN channel c ON p.channel = c.ch_id '
