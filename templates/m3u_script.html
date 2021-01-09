@@ -1,0 +1,68 @@
+<script>
+    var selected = {
+        title: "{{ _('Choose channel for play') }}",
+        value: ""
+    };
+    //var ref = "";
+
+    var label1 ="{{ _('Source list') }}";
+    var m3u = [];
+    {% for line in m3u.extinf %}
+        m3u.push({value: {{ line.stream | tojson }}, title: {{ line.getName() | tojson }}});
+    {% endfor %}
+    var buttons1 = [
+        {
+            title: "{{ _('Move') }}",
+            value: "-->"
+        },
+        {
+            title: "{{ _('Unselect') }}",
+            value: "{{ _('<- Unselect ->') }}"
+        }
+    ]
+
+    var label2 = "{{ _('Your list') }}";
+    {% if g.user %}
+        label2 = '<a id="pllst" href="/m3u/download/{{g.user["id"]}}_playlist.m3u8">{{ _("Your list") }}</a>';
+    {% endif %}
+    var mym3u = [];
+    {% for line in resm3u.extinf %}
+        mym3u.push({value: {{ line.stream | tojson }}, title: {{ line.getName() | tojson }}});
+    {% endfor %}
+    var buttons2 = [
+        {
+            title: "",
+            value: "{{ _('Up') }}"
+        },
+        {
+            title: "",
+            value: "{{ _('Down') }}"
+        },
+        {
+            title: "",
+            value: "{{ _('Delete') }}"
+        },
+        {
+            title: "",
+            value: "{{ _('Save') }}"
+        }
+    ]
+    
+    var nav_span = [
+        {
+            id: "prev",
+            title: "{{ _('Previos programme') }}",
+            text: "<<"
+        },
+        {
+            id: "now",
+            title: "{{ _('Current programme') }}",
+            text: "=="
+        },
+        {
+            id: "next",
+            title: "{{ _('Next programme') }}",
+            text: ">>"
+        }
+    ]
+</script>
