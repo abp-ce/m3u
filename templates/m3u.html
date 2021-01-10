@@ -16,7 +16,7 @@
   <template id="m3u-select">
     <div>
       <label style="white-space: nowrap;" :for="id" v-html="lbl"></label>
-      <p><select :id="id" @change="onSelList" multiple size="10">
+      <p><select ref="Select" :id="id" @change="onSelList" multiple size="10">
         <option disabled>{{ _('Choose channels') }}</option> 
         <option v-for="option in progs" :value="option.value">${ option.title }</option> 
       </select></p>
@@ -53,13 +53,13 @@
     <div id="m3u">
       <div style="display: inline-flex; flex-wrap: nowrap;">
         <div style="float: left; padding: 3px">
-          <m3u-sel v-model="s_selected" :progs="s_progs" :id = "s_id" :lbl = "s_lbl"></m3u-sel>
+          <m3u-sel v-model="s_selected" :progs="s_progs" :id = "s_id" :lbl = "s_lbl" :funcs = "['add', 'unselect']"></m3u-sel>
         </div>
         <div style="float: left; padding-top: 23px">
           <m3u-buttons :buttons="s_buttons" @btn-clk="s_button_click"></m3u-buttons>
         </div>
         <div style="float: left; padding: 3px">
-          <m3u-sel v-model="d_selected" :progs="d_progs" :id = "d_id" :lbl = "d_lbl"></m3u-sel>
+          <m3u-sel v-model="d_selected" :progs="d_progs" :id = "d_id" :lbl = "d_lbl" :funcs = "['unselect', 'up', 'down', 'delete', 'save']"></m3u-sel>
         </div>
         <div style="float: left; padding-top: 23px">
           <m3u-buttons :buttons="d_buttons" @btn-clk="d_button_click"></m3u-buttons>

@@ -1,30 +1,21 @@
-function isMobile() {
-    if( navigator.userAgent.match(/Android/i)
-    || navigator.userAgent.match(/iPhone/i)
-    || navigator.userAgent.match(/iPad/i)
-    || navigator.userAgent.match(/iPod/i)) return true;
-    return false;
-  }
-
-  function playc(sel) {
-    var videoSrc = sel.value;
-    if (Hls.isSupported()) {
-      var hls = new Hls();
-      hls.loadSource(videoSrc);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, function() {
-        video.play();
-      });
-    }
-    else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = videoSrc;
-    }
-  }
+const eventBus = new Vue()
 
 Vue.component('m3u-sel', {
-    props: ['progs', 'id', 'lbl'],
+    data: function() {
+        return {
+            dict: { 'add': this.add, 'unselect': this.unselect, 'up': this.up, 'down': this.down, 
+                    'delete': this.delete, 'save': this.save }
+        }
+    },
+    props: ['progs', 'id', 'lbl', 'funcs'],
     template: '#m3u-select',
     delimiters: ['${', '}'],
+    created: function() {
+        eventBus.$on('to-do',this.to_do)
+    },
+    beforeDestroy: function() {
+        eventBus.$off('to-do')
+    },
     methods: {
         onSelList: function () {
             sel = []
@@ -33,13 +24,74 @@ Vue.component('m3u-sel', {
                 if (opt.selected) 
                     sel.push({value: opt.value, title: opt.text})
             this.$emit('input',sel)
+        },
+        to_do: function(func) {
+            if (this.funcs.includes(func)) this.dict[func]();
+        },
+        add: function() {
+            let sel = this.$refs['Select'];
+            let opts = sel.options;
+            for (let opt of opts) 
+            if (opt.selected) 
+                RSel.add(opt.cloneNode(true));
+        },
+        unselect: function() {
+            let sel = this.$refs['Select'];
+            let opts = sel.options;
+            for (let opt of opts) 
+            if (opt.selected) 
+                opt.selected = false;
+        },
+        up: function() {
+            let sel = this.$refs['Select'];
+            let n = sel.selectedIndex;
+            let opt = sel.item(n);
+            sel.remove(n);
+            sel.add(opt,n-1);
+        },
+        down: function() {
+            let sel = this.$refs['Select'];
+            let n = sel.selectedIndex;
+            let opt = sel.item(n);
+            sel.remove(n);
+            sel.add(opt,n+1);
+        },
+        delete: function() {
+            let sel = this.$refs['Select'];
+            let opts = sel.options;
+            for (let i = 0; i < opts.length; i++) {
+                if (opts[i].selected) {
+                    sel.remove(i);
+                    i--;
+                }
+            }
+        },
+        save: function() {
+            let sel = this.$refs['Select'];
+            let opts = sel.options;
+            let jsn = {};
+            for (let opt of opts) {
+                if (opt.disabled) continue;
+                jsn[opt.text] = opt.value;
+            }
+            jss = JSON.stringify(jsn);
+            fetch('/m3u/save', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: jss
+            }).then(function(response) {
+                if (response.redirected) window.location.href = response.url;
+                else response.text().then(function(myText){alert(myText);})
+            })
         }
     }
 })
 
 
 Vue.component('m3u-buttons', {
-    props: ['buttons'],
+    props: ['buttons', 'funcs'],
     template: '#m3u-buttons',
     delimiters: ['${', '}']
 })
@@ -130,13 +182,11 @@ m3u_vue = new Vue({
             this.selected = this.s_selected[0];
             if(ext.checked) this.selected.value = "iptv:" + this.selected.value;
             else playc(this.selected);
-            //get_epg(this.selected.title);
         },
         d_selected() {
             this.selected = this.d_selected[0];
             if(ext.checked) this.selected.value = "iptv:" + this.selected.value;
             else playc(this.selected);
-            //get_epg(this.selected.title);
         },
         chk() {
             if (this.chk) {
@@ -152,68 +202,12 @@ m3u_vue = new Vue({
     },
     methods: {
         s_button_click: function(ind) {
-            var dict = {0: this.move, 1: this.unselect};
-            dict[ind]();
+            var dict = {0: 'add', 1: 'unselect'};
+            eventBus.$emit('to-do', dict[ind]);
         },
         d_button_click: function(ind) {
-            var dict = {0: this.up, 1: this.down, 2: this.delete, 3: this.save};
-            dict[ind]();
+            var dict = {0: 'up', 1: 'down', 2: 'delete', 3: 'save'};
+            eventBus.$emit('to-do', dict[ind]);
         },
-        move: function() {
-            let opts = Sel.options;
-            for (let opt of opts) 
-            if (opt.selected) 
-                RSel.add(opt.cloneNode(true));
-        },
-        unselect: function() {
-            let opts = Sel.options;
-            for (let opt of opts) 
-            if (opt.selected) 
-                opt.selected = false;
-            opts = RSel.options;
-            for (let opt of opts) 
-            if (opt.selected) 
-                opt.selected = false;
-        },
-        up: function() {
-            let n = RSel.selectedIndex;
-            let opt = RSel.item(n);
-            RSel.remove(n);
-            RSel.add(opt,n-1);
-        },
-        down: function() {
-            let n = RSel.selectedIndex;
-            let opt = RSel.item(n);
-            RSel.remove(n);
-            RSel.add(opt,n+1);
-        },
-        delete: function() {
-            let opts = RSel.options;
-            for (let i = 0; i < opts.length; i++) {
-                if (opts[i].selected) {
-                    RSel.remove(i);
-                    i--;
-                }
-            }
-        },
-        save: function() {
-            let opts = RSel.options;
-            let jsn = {};
-            for (let opt of opts) {
-                if (opt.disabled) continue;
-                jsn[opt.text] = opt.value;
-            }
-            jss = JSON.stringify(jsn);
-            fetch('/m3u/save', {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: jss
-            }).then(function(response) {
-                if (response.redirected) window.location.href = response.url;
-                else response.text().then(function(myText){alert(myText);})
-            })
-        }
     }
 })
