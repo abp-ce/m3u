@@ -3,7 +3,8 @@
         title: "{{ _('Choose channel for play') }}",
         value: ""
     };
-    //var ref = "";
+    
+    var last_url = {{ last_url | tojson }};
 
     var label1 ="{{ _('Source list') }}";
     var m3u = [];

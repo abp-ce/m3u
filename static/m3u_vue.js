@@ -3,11 +3,11 @@ const eventBus = new Vue()
 Vue.component('m3u-sel', {
     data: function() {
         return {
-            dict: { 'add': this.add, 'unselect': this.unselect, 'up': this.up, 'down': this.down, 
-                    'delete': this.delete, 'save': this.save }
+            dict: { 'add': this.add, 'get': this.get, 'unselect': this.unselect, 'up': this.up, 'down': this.down, 
+                    'delete': this.delete, 'delete_all': this.delete_all, 'save': this.save }
         }
     },
-    props: ['progs', 'id', 'lbl', 'funcs'],
+    props: ['progs', 'id', 'lbl'],
     template: '#m3u-select',
     delimiters: ['${', '}'],
     created: function() {
@@ -25,15 +25,24 @@ Vue.component('m3u-sel', {
                     sel.push({value: opt.value, title: opt.text})
             this.$emit('input',sel)
         },
-        to_do: function(func) {
-            if (this.funcs.includes(func)) this.dict[func]();
+        to_do: function(id, func, opts = null) {
+            if (this.id == id) 
+                if (opts) this.dict[func](opts);
+                else this.dict[func]();
         },
-        add: function() {
+        add: function(opts) {
+            let sel = this.$refs['Select'];
+            for (let opt of opts)
+                sel.add(opt);
+        },
+        get: function() {
             let sel = this.$refs['Select'];
             let opts = sel.options;
+            let ret = [];
             for (let opt of opts) 
-            if (opt.selected) 
-                RSel.add(opt.cloneNode(true));
+                if (opt.selected) 
+                    ret.push(opt.cloneNode(true));
+            this.$emit('get-opt', ret);           
         },
         unselect: function() {
             let sel = this.$refs['Select'];
@@ -59,11 +68,13 @@ Vue.component('m3u-sel', {
         delete: function() {
             let sel = this.$refs['Select'];
             let opts = sel.options;
-            for (let i = 0; i < opts.length; i++) {
-                if (opts[i].selected) {
-                    sel.remove(i);
-                    i--;
-                }
+            for (let i = opts.length - 1; i >= 0; i--) 
+                if (opts[i].selected) sel.remove(i);
+        },
+        delete_all: function() {
+            let sel = this.$refs['Select'];
+            while (sel.options.length > 0) {
+                sel.remove(0);
             }
         },
         save: function() {
@@ -162,6 +173,7 @@ Vue.component('m3u-prg', {
 m3u_vue = new Vue({
     el: '#m3u',
     data: {
+        url: last_url,
         selected: selected,
         s_buttons: buttons1,
         d_buttons: buttons2,
@@ -201,13 +213,30 @@ m3u_vue = new Vue({
         }
     },
     methods: {
+        load: async function() {
+            const response = await fetch('/m3u/load', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: this.url
+            })
+            const jsn = await response.json() 
+            eventBus.$emit('to-do', this.s_id, 'delete_all');
+            let opts = jsn.map(function(el) { return new Option(el.title, el.value);})
+            eventBus.$emit('to-do', this.s_id, 'add', opts);
+        },
         s_button_click: function(ind) {
-            var dict = {0: 'add', 1: 'unselect'};
-            eventBus.$emit('to-do', dict[ind]);
+            var dict = {0: 'get', 1: 'unselect'};
+            eventBus.$emit('to-do', this.s_id, dict[ind]);
+            if (ind) eventBus.$emit('to-do', this.d_id, dict[ind]);
         },
         d_button_click: function(ind) {
             var dict = {0: 'up', 1: 'down', 2: 'delete', 3: 'save'};
-            eventBus.$emit('to-do', dict[ind]);
+            eventBus.$emit('to-do', this.d_id, dict[ind]);
         },
+        move: function(opts) {
+            eventBus.$emit('to-do', this.d_id, 'add', opts);
+        }
     }
 })

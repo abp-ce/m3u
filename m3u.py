@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for, current_app, send_from_directory, abort
+    Blueprint, flash, g, session, redirect, render_template, request, url_for, current_app, send_from_directory, abort
 )
 from flask_babel import _
 import urllib
@@ -22,7 +22,8 @@ def get_m3u(id = None) :
         g.resm3u = M3Uclass.M3U(empty=True)
         return
     if 'm3u' not in g :
-        g.m3u = M3Uclass.M3U(empty=True)
+        load_by_url()
+        #g.m3u = M3Uclass.M3U(empty=True)
     if 'resm3u' in g : 
         return
     db = get_db()
@@ -63,7 +64,7 @@ def m3u():
                 lines = f.readlines()
             g.m3u = M3Uclass.M3U(lines)
             #resm3u = M3Uclass.M3U(lines,True)
-    return render_template('m3u.html', m3u=g.m3u, resm3u=g.resm3u)
+    return render_template('m3u.html', m3u=g.m3u, resm3u=g.resm3u, last_url=session['last_url'] if 'last_url' in session else '')
 
 @bp.route('/m3u/save', methods=['POST'])
 @login_required
@@ -114,6 +115,23 @@ def subs_name(pr_name):
         shift = int(name[pos:])
         name = name[:pos].rstrip('(').rstrip()
     return name, shift
+
+def load_by_url():
+    if 'last_url' in session:
+        with urllib.request.urlopen(session['last_url']) as f:
+            lines = f.readlines()
+        g.m3u = M3Uclass.M3U(lines)
+    else: 
+        g.m3u = M3Uclass.M3U(empty=True)
+    
+@bp.route('/m3u/load', methods=['POST'])
+def m3u_load():
+    session['last_url'] = request.get_data().decode('utf-8')
+    load_by_url()
+    #with urllib.request.urlopen(url) as f:
+        #lines = f.readlines()
+    #g.m3u = M3Uclass.M3U(lines)
+    return json.dumps(g.m3u.get_dict_arr())
 
 
 @bp.route('/m3u/select', methods=['POST'])

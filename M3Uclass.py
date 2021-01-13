@@ -32,6 +32,8 @@ class M3U:
                 str1 = None
             elif line.find("#EXTM3U") == 0:
                 self.extm3u = line
+    def get_dict_arr(self):
+        return [{ 'title': ei.getName(), 'value': ei.stream } for ei in self.extinf]
 """
 def main():
     with open('/home/abp/flask-tutorial/flaskr/hd.m3u') as f:

@@ -41,25 +41,26 @@
     </div>
   </template>
 
-  <form method="post">
-    <div style="clear: both">
-      <p>
-        <label for="url">{{ _('Playlist address') }}</label>
-        <input id="url" name="url" style="width: 100%" type="url" placeholder="https://iptvm3u.ru/hdlist.m3u">
-        <input name="btn" type="submit" value="{{ _('Load') }}">
-      </p>
-    </div>
+  <!--form method="post"-->
+  <div>
     {% include 'm3u_script.html' %}
     <div id="m3u">
+      <div style="clear: both">
+        <p>
+          <label for="url">{{ _('Playlist address') }}</label>
+          <input name="url" v-model="url" style="width: 100%" type="url" placeholder="https://iptvm3u.ru/hdlist.m3u">
+          <input name="btn" type="button" value="{{ _('Load') }}" @click="load">
+        </p>
+      </div>
       <div style="display: inline-flex; flex-wrap: nowrap;">
         <div style="float: left; padding: 3px">
-          <m3u-sel v-model="s_selected" :progs="s_progs" :id = "s_id" :lbl = "s_lbl" :funcs = "['add', 'unselect']"></m3u-sel>
+          <m3u-sel v-model="s_selected" :progs="s_progs" :id = "s_id" :lbl = "s_lbl" @get-opt = "move"></m3u-sel>
         </div>
         <div style="float: left; padding-top: 23px">
           <m3u-buttons :buttons="s_buttons" @btn-clk="s_button_click"></m3u-buttons>
         </div>
         <div style="float: left; padding: 3px">
-          <m3u-sel v-model="d_selected" :progs="d_progs" :id = "d_id" :lbl = "d_lbl" :funcs = "['unselect', 'up', 'down', 'delete', 'save']"></m3u-sel>
+          <m3u-sel v-model="d_selected" :progs="d_progs" :id = "d_id" :lbl = "d_lbl"></m3u-sel>
         </div>
         <div style="float: left; padding-top: 23px">
           <m3u-buttons :buttons="d_buttons" @btn-clk="d_button_click"></m3u-buttons>
@@ -75,7 +76,8 @@
         <video id="video" type="video/mp4" poster="//vjs.zencdn.net/v/oceans.png" preload="metadata" controls width="400"></video>
       </div>
     </div>
-  </form>
+  <!--/form-->
+  </div>
   <script>
     if ( isMobile() ) {
       lext.style.display = 'none';
