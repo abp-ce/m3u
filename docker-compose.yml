@@ -1,9 +1,9 @@
 version: '3.3'
 services:
-  db:
+  psql:
     image: postgres:13-alpine
-    ports:
-      - 5432:5432
+    # ports:
+    #   - 5432:5432
     env_file: ./.env
     volumes:
       - postgres_data:/var/lib/postgresql/data/
@@ -11,10 +11,36 @@ services:
   redis:
     image: redis:alpine
     restart: always
-    ports:
-      - 6379:6379
+    # ports:
+    #   - 6379:6379
     volumes:
       - redis_data:/data
+
+  backend:
+    build: ./m3u-backend/
+    ports:
+      - 8000:8000
+    depends_on:
+      - psql
+    command: sh -c "sleep 5 && alembic upgrade head &&
+      uvicorn main:app --host 0.0.0.0 --reload"
+    restart: always
+    env_file:
+      - ./m3u-backend/.env
+    volumes:
+      - ./m3u-backend:/app
+
+  telebot:
+    build: ./m3u-aiogram
+    depends_on:
+      - redis
+      - backend
+    command: python main.py
+    restart: always
+    env_file:
+      - ./m3u-aiogram/.env
+    volumes:
+      - ./m3u-aiogram:/app
 
 
 volumes:
